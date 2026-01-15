@@ -1,0 +1,7 @@
+.env
+node_modules
+bot.log
+logs
+*.js
+dist
+!ecosystem.config.js

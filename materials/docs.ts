@@ -1,0 +1,42 @@
+//Семейно-правовые отношения
+export const FLR_DIVORCE_FILE = 'f9LHodD0cOIXkBq6MSZVjIP5MciE_psZj0U-2_jDSCG4KisPs7imgZUuYOIzN6htzj6N9dd-WrHlg_mwi863'
+export const FLR_COLLECTION_OF_ALIMONY_1_CHILD = 'f9LHodD0cOK0AiWffD2u6g4PsiLzjlLAmhhlNuhKJuJWzbS-Crltv7PzVuv8hYk4AXjfufrnt1YqIPSmH3vr'
+export const FLR_COLLECTION_OF_ALIMONY_2_CHILD = 'f9LHodD0cOJ84kmxoCLv2FOsdYNNo8O9hNKXEODRtMp_WUtx0e-OdlAc_hE-exesV3ub76_FBzRRjX7hZJgz'
+export const FLR_CONSENT_WITH_CLAIMS_FOR_DIVORCE_FILE = 'f9LHodD0cOLg7h8ICiSUYAqBi1z28NpvSSE7VSbLmRqkqZfH9tibs0GL6WBkzIm94cG9bHdQSL4080iIYwI6'
+export const FLR_REFUSAL_OF_A_CLAIM_FOR_DIVORCE_FILE = 'f9LHodD0cOKc2zR3v9r-rnilA65svnLHgzSbpn4vJQsLbLE5p4CtmHj36NVowtUMw9ZpISQn8RreFyNX5RDS'
+export const FLR_NOT_AGREE_WITH_THE_CLAIM_FILE = 'f9LHodD0cOLbvuvQFdaVXvofQ-e872wXMy8SM5lX6atFHDAErsmpxqMOkDl5gTbBhAR5oEXNKzj3PVi7Yz_0'
+
+
+//Заявление о вынесении судебного приказа
+export const APP_FOR_COURT_ORDER_DOC = 'f9LHodD0cOJd8LpgqsZqTSzJVV-t2zX_EKhWjuBI_7pYsH0iCO7RS7ZJVWBFFqaqbXY_3QbkDe6btKg_7KSe'
+
+
+//Поворот решения
+export const ROTATE_THE_SOLUTION_DOC = 'f9LHodD0cOL-8RiqwilOZ5NY7kLfJ2Z3YpbdnVJdTkrnHjOSYkxzfW214Syg_auHaxd0DL2kSMtJyZUYWT2P'
+
+
+//Взыскание стоимости проезда
+export const COLLECTION_OF_FARES_DOC = 'f9LHodD0cOKysK-YMVnOsKIJ9mBgrmSi0ho4xHH-W0c1T9XD4sKxeMZafYcOB04Jn5es2_gjLokjJEBpRNrL'
+
+
+//Образцы заявлений
+export const SA_FAMILIARIZATION_WITH_MATERIALS_DOC = 'f9LHodD0cOKSI3Yq9GDbvxXSrEmbX_rmf31DZzHmQjBsypjohakNO_kq4yuPC758MDuknUgf_gAGbgmdd7BE'
+export const SA_COPY_JUDICIAL_ACT_DOC = 'f9LHodD0cOKUqV0HXoOnisTX5ByMMWFurMxNfNWwmwzxp-P_2kUAHbdcr4lPwOAF6doW3WdMLQKs49sZWqFQ'
+export const SA_CONSENT_AP_CASE_DOC = 'f9LHodD0cOJ27RwC3c8ai8e_iDeDlvjvDCJggCwPs-DRgD0lBhVivX2nGR1ZAaEeGAFwWr1xjmzrC2Dcwfjv'
+export const SA_PETITION_FOR_CONSIDERATION_DOC = 'f9LHodD0cOIbJBZKfs3VbQgVwHZDflbXQX9bZ7wbHGjg5SCFPNwqCqjRL1xuJHpJFHCphUrh71j8AUndRhEc'
+
+//Электронный исполнительный документ
+export const ELECTRONIC_EXECULTIVE_DOCUMENTS_DOC = 'f9LHodD0cOJNroWu_z_FkOzGcNtURZpt_UtbCqq4AjTc7HknQSVKbcoboweS4983IoEsKces3B0N-2HdWQGI'
+
+//Согласие на смс уведомление
+export const CONSENT_TO_SMS_NOTIFICATIONS_DOC = 'f9LHodD0cOJQKeqiRCIZ2yN2z3gzBtVxPKg-U6p9BOZpRKMUDJCvcoMN5FBDIxH7KVxzkPo7W1ZQS0S2U2qf'
+
+//Бесплатная юридическая помощь
+export const FLH_SOCIAL_ADVERTISING_DOC = 'f9LHodD0cOIVhYisSXVCJ-K6D_5G0PsYBaEYfYCnKWlYiEWKryqnFxIr2eY1NUM9LRHhkJfoVyhYXl-86Ve_'
+export const FLH_MEMO_UKRAINE_DOC = 'f9LHodD0cOJpnfH68thpce262Y-U8rrVXgXYbqYO5GzPMnRRI9mxoVPYeIy5BYe2YOAwP1ouZNLHGUh3Hok4'
+export const FLH_MEMO_SVO_DOC = 'f9LHodD0cOKP1yNKnCtOf7t0cZ3OfXaXKOctc6SC5gxNTnBG-N-MJnUP3VSF3I_f1ImN0mnQsZgCLdo-mSuw'
+
+//Отмена судебных актов
+export const CJA_COURT_ORDER_DOC_1 = 'f9LHodD0cOIvbWxopNAbPPzeANqIsZBQDRTv1qBoF0kWzBrChs86dGbFwC9KLhPbBhULa-ZiJpxplNDXTEyS'
+export const CJA_COURT_ORDER_DOC_2 = 'f9LHodD0cOJwy9wYshh21iEEd35zK4l8VBLWg-EnjgZzBsHsGoLRcqITf9GEGriwKKh3eTjx4lC0c-0P7rI-'
+export const CJA_DEFAULT_JUDGMENT_DOC = 'f9LHodD0cOJ5XhinLue43zRLJp0MO1HqL_l-StRDZ8uCt_cnPWtaq0AUwmKk_xt-4z9rY3jzc3SjrPj-fAwY'
