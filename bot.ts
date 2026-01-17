@@ -8,10 +8,10 @@ import { startCommand, processUnclearMessage} from './commands/start';
 import { START_COMMAND } from './commands/main';
 import { ABOUT_PERSONAL_CENTER } from './actions/aboutPersonalCenters';
 import { MAIN_PAGE_ACTION } from './actions/main';
-import { PERSONNEL_SELECTION, PS_SEARCH, PS_SEARCH_APP_SEARCH_EMPL, PS_SEARCH_TIPS_WRITING_JOB_VACANCIES, PS_SEARCH_VACANSY } from './actions/personnelSelection';
+import { PERSONNEL_SELECTION, PS_EVENTS, PS_EVENTS_JOB_FAIRS, PS_EVENTS_MASS_SELECTION, PS_EVENTS_OPEN_SELECTION, PS_EVENTS_ORG_INTERVIEWS, PS_EVENTS_RECRUTING_TOUR, PS_EVENTS_TRADE_UNIONS, PS_EVENTS_WORK_NEARBY, PS_SEARCH, PS_SEARCH_APP_SEARCH_EMPL, PS_SEARCH_TIPS_WRITING_JOB_VACANCIES, PS_SEARCH_VACANSY } from './actions/personnelSelection';
 
 import { getAboutPersonalCenter } from './commands/aboutPersonalCenter';
-import { getPersonnelSelection, getPSSearchAndSelectionCandidateAppSearchEmployes, getPSSearchAndSelectionCandidates, getPSSearchAndSelectionCandidateTipsWritingJobsVacancies, getPSSearchAndSelectionCandidateVacancies } from './commands/personnelSelection';
+import { getPersonnelSelection, getPSEvents, getPSEventsJobFairs, getPSEventsMassSelection, getPSEventsOpenSelection, getPSEventsOrgInterviews, getPSEventsRecrutingTour, getPSEventsTradeUnions, getPSEventsWorkNearby, getPSSearchAndSelectionCandidateAppSearchEmployes, getPSSearchAndSelectionCandidates, getPSSearchAndSelectionCandidateTipsWritingJobsVacancies, getPSSearchAndSelectionCandidateVacancies } from './commands/personnelSelection';
 
 
 import logger from './logger';
@@ -101,6 +101,55 @@ bot.action(PS_SEARCH_TIPS_WRITING_JOB_VACANCIES, async(ctx) =>{
     await getPSSearchAndSelectionCandidateTipsWritingJobsVacancies(ctx)
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Поиск и подбор кандидатов -> Советы по составлению вакансий__ timestamp: ${ctx.update.timestamp}`)
 })
+
+//Подбор персонала -> Мероприятия по подбору
+bot.action(PS_EVENTS, async(ctx) => {
+    await getPSEvents(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Мероприятия по подбору__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Подбор персонала -> Мероприятия по подбору -> Ярмарки вакансий 
+bot.action(PS_EVENTS_JOB_FAIRS, async(ctx) => {
+    await getPSEventsJobFairs(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Мероприятия по подбору -> Ярмарки вакансий__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Подбор персонала -> Мероприятия по подбору -> Открытый отбор
+bot.action(PS_EVENTS_OPEN_SELECTION, async(ctx) => {
+    await getPSEventsOpenSelection(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Мероприятия по подбору -> Открытый отбор__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Подбор персонала -> Мероприятия по подбору -> Массовый подбор
+bot.action(PS_EVENTS_MASS_SELECTION, async(ctx) => {
+    await getPSEventsMassSelection(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Мероприятия по подбору -> Массовый подбор__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Подбор персонала -> Мероприятия по подбору -> Организация собеседований
+bot.action(PS_EVENTS_ORG_INTERVIEWS, async(ctx) => {
+    await getPSEventsOrgInterviews(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Мероприятия по подбору -> Организация собеседований__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Подбор персонала -> Мероприятия по подбору -> Профтуры 
+bot.action(PS_EVENTS_TRADE_UNIONS, async(ctx) => {
+    await getPSEventsTradeUnions(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Мероприятия по подбору -> Профтуры__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Подбор персонала -> Мероприятия по подбору -> Рекрутинговый тур
+bot.action(PS_EVENTS_RECRUTING_TOUR, async(ctx) => {
+    await getPSEventsRecrutingTour(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Мероприятия по подбору -> Рекрутинговый тур__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Подбор персонала -> Мероприятия по подбору -> «Работа рядом»
+bot.action(PS_EVENTS_WORK_NEARBY, async(ctx) => {
+    await getPSEventsWorkNearby(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Мероприятия по подбору -> «Работа рядом»__ timestamp: ${ctx.update.timestamp}`)
+})
+
 
 bot.catch(() => {
     logger.error('Bot is down')
