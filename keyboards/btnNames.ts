@@ -1,0 +1,1 @@
+export const BACK_BTN_NAME = '⬅️ Назад'

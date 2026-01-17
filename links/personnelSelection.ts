@@ -1,0 +1,1 @@
+export const RABOTA_IN_RUSSIA_LINK='https://trudvsem.ru/'

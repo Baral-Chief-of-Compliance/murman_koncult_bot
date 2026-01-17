@@ -1,13 +1,17 @@
-import { Bot} from '@maxhub/max-bot-api';
+import { Bot, Context} from '@maxhub/max-bot-api';
 import { setGlobalDispatcher } from 'undici';
 import dotenv from 'dotenv'
 
 import { proxyAgent } from './proxy';
 import { commandsList } from './commands/main';
-import { startCommand, processUnclearMessage, MAIN_PAGE_ACTION } from './commands/start';
+import { startCommand, processUnclearMessage} from './commands/start';
 import { START_COMMAND } from './commands/main';
-import { ABOUT_PERSONAL_CENTER, getAboutPersonalCenter } from './commands/aboutPersonalCenter';
+import { ABOUT_PERSONAL_CENTER } from './actions/aboutPersonalCenters';
+import { MAIN_PAGE_ACTION } from './actions/main';
+import { PERSONNEL_SELECTION, PS_SEARCH, PS_SEARCH_APP_SEARCH_EMPL, PS_SEARCH_TIPS_WRITING_JOB_VACANCIES, PS_SEARCH_VACANSY } from './actions/personnelSelection';
 
+import { getAboutPersonalCenter } from './commands/aboutPersonalCenter';
+import { getPersonnelSelection, getPSSearchAndSelectionCandidateAppSearchEmployes, getPSSearchAndSelectionCandidates, getPSSearchAndSelectionCandidateTipsWritingJobsVacancies, getPSSearchAndSelectionCandidateVacancies } from './commands/personnelSelection';
 
 
 import logger from './logger';
@@ -62,14 +66,44 @@ bot.action(MAIN_PAGE_ACTION, async(ctx) => {
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __На главную__ timestamp: ${ctx.update.timestamp}`)
 })
 
-//Дейсвтие при нажатии на кнопку О кадровом центре
+//О кадровом центре
 bot.action(ABOUT_PERSONAL_CENTER, async (ctx) => {
     await getAboutPersonalCenter(ctx)
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __О кадровом центре__ timestamp: ${ctx.update.timestamp}`)
 })
 
-// bot.catch(() => {
-//     logger.error('Bot is down')
-// })
+//Подбор персонала
+bot.action(PERSONNEL_SELECTION, async (ctx) => {
+    await getPersonnelSelection(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Подбор персонала -> Поиск и подбор кандидатов
+bot.action(PS_SEARCH, async (ctx) => {
+    await getPSSearchAndSelectionCandidates(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Поиск и подбор кандидатов__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Подбор персонала -> Поиск и подбор кандидатов -> Размещение вакансий
+bot.action(PS_SEARCH_VACANSY, async(ctx) => {
+    await getPSSearchAndSelectionCandidateVacancies(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Поиск и подбор кандидатов -> Размещение вакансий__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Подбор персонала -> Поиск и подбор кандидатов -> Подача заявления на поиск работников
+bot.action(PS_SEARCH_APP_SEARCH_EMPL, async(ctx) => {
+    await getPSSearchAndSelectionCandidateAppSearchEmployes(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Поиск и подбор кандидатов -> Подача заявления на поиск работников__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Подбор персонала -> Поиск и подбор кандидатов -> Советы по составлению вакансий
+bot.action(PS_SEARCH_TIPS_WRITING_JOB_VACANCIES, async(ctx) =>{
+    await getPSSearchAndSelectionCandidateTipsWritingJobsVacancies(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Поиск и подбор кандидатов -> Советы по составлению вакансий__ timestamp: ${ctx.update.timestamp}`)
+})
+
+bot.catch(() => {
+    logger.error('Bot is down')
+})
 
 bot.start();

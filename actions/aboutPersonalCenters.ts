@@ -1,0 +1,1 @@
+export const ABOUT_PERSONAL_CENTER = 'about_pс'
