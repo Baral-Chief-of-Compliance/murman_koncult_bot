@@ -15,6 +15,8 @@ import { getPersonnelSelection, getPSEvents, getPSEventsJobFairs, getPSEventsMas
 
 
 import logger from './logger';
+import { HELP_ADVICE, HP_DISBLED_PEOPLE } from './actions/helpAdvice';
+import { getHelpAdvice, getHPDisabledPeople } from './commands/helpAdvice';
 
 // настройка перменных виртуального окружения
 dotenv.config({ path: '.env'})
@@ -150,6 +152,17 @@ bot.action(PS_EVENTS_WORK_NEARBY, async(ctx) => {
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Подбор персонала -> Мероприятия по подбору -> «Работа рядом»__ timestamp: ${ctx.update.timestamp}`)
 })
 
+//Программы поддержки
+bot.action(HELP_ADVICE, async(ctx) => {
+    await getHelpAdvice(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Программы поддержки__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Программы поддержки -> Трудоустройство инвалидов
+bot.action(HP_DISBLED_PEOPLE, async(ctx) => {
+    await getHPDisabledPeople(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Программы поддержки -> Трудоустройство инвалидов__ timestamp: ${ctx.update.timestamp}`)
+})
 
 bot.catch(() => {
     logger.error('Bot is down')
