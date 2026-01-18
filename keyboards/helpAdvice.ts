@@ -6,6 +6,7 @@ import { HP_DISBLED_PEOPLE, HP_SPECIFIC_CATEG,
     HP_TEMPORARY, HELP_ADVICE
  } from "../actions/helpAdvice";
 import { BACK_BTN_NAME } from "./btnNames";
+import { HP_TRAINING_LINK } from "../links/helpAdvice";
 
 
 const goHelpAdviceBackKeyboard = [Keyboard.button.callback(BACK_BTN_NAME, HELP_ADVICE, {intent: 'default'})]
@@ -23,6 +24,14 @@ export const helpAdviceKeyboard = Keyboard.inlineKeyboard(
 
 export const helpAdviceChildrenKeyboard = Keyboard.inlineKeyboard(
     [
+        goHelpAdviceBackKeyboard,
+        goMainPageKeyboard
+    ]
+)
+
+export const helpAdviceTrainingKeyboard = Keyboard.inlineKeyboard(
+    [
+        [Keyboard.button.link('Доступные программ обучения ', HP_TRAINING_LINK)],
         goHelpAdviceBackKeyboard,
         goMainPageKeyboard
     ]

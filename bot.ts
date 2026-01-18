@@ -15,8 +15,8 @@ import { getPersonnelSelection, getPSEvents, getPSEventsJobFairs, getPSEventsMas
 
 
 import logger from './logger';
-import { HELP_ADVICE, HP_DISBLED_PEOPLE } from './actions/helpAdvice';
-import { getHelpAdvice, getHPDisabledPeople } from './commands/helpAdvice';
+import { HELP_ADVICE, HP_DISBLED_PEOPLE, HP_RELOCATION, HP_SPECIFIC_CATEG, HP_TEMPORARY, HP_TRAINING } from './actions/helpAdvice';
+import { getHelpAdvice, getHPDisabledPeople, getHPRelocation, getHPSpecificCateg, getHPTemporary, getHPTraining } from './commands/helpAdvice';
 
 // настройка перменных виртуального окружения
 dotenv.config({ path: '.env'})
@@ -162,6 +162,30 @@ bot.action(HELP_ADVICE, async(ctx) => {
 bot.action(HP_DISBLED_PEOPLE, async(ctx) => {
     await getHPDisabledPeople(ctx)
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Программы поддержки -> Трудоустройство инвалидов__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Программы поддержки -> Найм отдельных категорий
+bot.action(HP_SPECIFIC_CATEG, async(ctx) => {
+    await getHPSpecificCateg(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Программы поддержк -> Найм отдельных категорий__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Переезд работников из другой местности 
+bot.action(HP_RELOCATION, async(ctx) => {
+    await getHPRelocation(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Программы поддержк -> Переезд работников из другой местности __ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Обучение и переквалификация сотрудников 
+bot.action(HP_TRAINING, async(ctx) => {
+    await getHPTraining(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Программы поддержк -> Обучение и переквалификация сотрудников__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Организация временной занятости
+bot.action(HP_TEMPORARY, async(ctx) => {
+    await getHPTemporary(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Программы поддержк -> Организация временной занятости__ timestamp: ${ctx.update.timestamp}`)
 })
 
 bot.catch(() => {

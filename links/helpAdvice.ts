@@ -1,0 +1,1 @@
+export const HP_TRAINING_LINK = 'https://trudvsem.ru/information-pages/support-employment/'
