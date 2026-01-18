@@ -17,6 +17,8 @@ import { getPersonnelSelection, getPSEvents, getPSEventsJobFairs, getPSEventsMas
 import logger from './logger';
 import { HELP_ADVICE, HP_DISBLED_PEOPLE, HP_RELOCATION, HP_SPECIFIC_CATEG, HP_TEMPORARY, HP_TRAINING } from './actions/helpAdvice';
 import { getHelpAdvice, getHPDisabledPeople, getHPRelocation, getHPSpecificCateg, getHPTemporary, getHPTraining } from './commands/helpAdvice';
+import { REPORTING_PC, REPORTING_PC_ADMISSION, REPORTING_PC_BANKRUPTCY_PROCEDURE, REPORTING_PC_DOWNSIZING, REPORTING_PC_IDLE_MODE, REPORTING_PC_JOB_QUOTAS_DISABLED, REPORTING_PC_PART_TIME, REPORTING_PC_REMOTE_WORK } from './actions/reportingPersonalCenter';
+import { reportingPCAdmission, reportingPCBankruptcyProcedure, reportingPCDownsizing, reportingPCIdleMode, reportingPCJobQuotasDisabled, reportingPCPartTime, reportingPCRemoteWork, reportingPersonalCenter } from './commands/reportingInPersonalCenter';
 
 // настройка перменных виртуального окружения
 dotenv.config({ path: '.env'})
@@ -186,6 +188,54 @@ bot.action(HP_TRAINING, async(ctx) => {
 bot.action(HP_TEMPORARY, async(ctx) => {
     await getHPTemporary(ctx)
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Программы поддержк -> Организация временной занятости__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Отчетность в ЦЗН
+bot.action(REPORTING_PC, async(ctx) =>{
+    await reportingPersonalCenter(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Отчетность в ЦЗН__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Режим простоя
+bot.action(REPORTING_PC_IDLE_MODE, async(ctx) => {
+    await reportingPCIdleMode(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Отчетность в ЦЗН -> Режим простоя__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Процедура банкротства
+bot.action(REPORTING_PC_BANKRUPTCY_PROCEDURE, async(ctx) => {
+    await reportingPCBankruptcyProcedure(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Отчетность в ЦЗН -> Процедура банкротства__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Сокращение численности/ликвидация
+bot.action(REPORTING_PC_DOWNSIZING, async(ctx) => {
+    await reportingPCDownsizing(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Отчетность в ЦЗН -> Сокращение численности/ликвидация__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Неполный рабочий день/сокращенный рабочий день
+bot.action(REPORTING_PC_PART_TIME, async(ctx) => {
+    await reportingPCPartTime(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Отчетность в ЦЗН -> Неполный рабочий день/сокращенный рабочий день__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Квотирование рабочих мест для инвалидов
+bot.action(REPORTING_PC_JOB_QUOTAS_DISABLED, async(ctx) => {
+    await reportingPCJobQuotasDisabled(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Отчетность в ЦЗН -> Квотирование рабочих мест для инвалидов__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Дистанционная работа
+bot.action(REPORTING_PC_REMOTE_WORK, async(ctx) => {
+    await reportingPCRemoteWork(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Отчетность в ЦЗН -> Дистанционная работа__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Приём по направлению ЦЗН или отказ в трудоустройстве
+bot.action(REPORTING_PC_ADMISSION, async(ctx) => {
+    await reportingPCAdmission(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Отчетность в ЦЗН -> Приём по направлению ЦЗН или отказ в трудоустройстве__ timestamp: ${ctx.update.timestamp}`)
 })
 
 bot.catch(() => {
