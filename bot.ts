@@ -3,7 +3,7 @@ import { setGlobalDispatcher } from 'undici';
 import dotenv from 'dotenv'
 
 import { proxyAgent } from './proxy';
-import { commandsList } from './commands/main';
+import { commandsList, CONTACT_COMMAND, GoToRabotaInRussia, goVkGroup, RIR_COMMAND, SITE_COMMAND } from './commands/main';
 import { startCommand, processUnclearMessage} from './commands/start';
 import { START_COMMAND } from './commands/main';
 import { ABOUT_PERSONAL_CENTER } from './actions/aboutPersonalCenters';
@@ -22,6 +22,8 @@ import { reportingPCAdmission, reportingPCBankruptcyProcedure, reportingPCDownsi
 import { ANANLYSTIC_RESEARCH, AS_MARKET_REVIEWS, AS_OTHER_SURVEYS } from './actions/analysticResearch';
 import { getAnalysticResearch, getARMarketReviews, getAROtherSurveys, getARRussuinSurvey } from './commands/analyticsResearch';
 import { AR_ALL_RUSSIA_SURVEY } from './links/analysticResearch';
+import { HC_DOCUMENTS, HC_FEEDBACK_FORM, HC_FREQUENTLY_ASKED_QUESTIONS, HC_HOTLINE, HELP_CONSULT } from './actions/supportProgram';
+import { hcDocuments, hcFeedbackForm, hcFrequentlyAskedQuestions, hcHotline, helpConsult } from './commands/supportProgram';
 
 // настройка перменных виртуального окружения
 dotenv.config({ path: '.env'})
@@ -66,6 +68,24 @@ bot.command(START_COMMAND, async(ctx) => {
     await startCommand(ctx)
     logger.info(`User with id ${(ctx.user as any)?.user_id} use command ${START_COMMAND}  timestamp: ${ctx.message.timestamp}`)
 });
+
+//Обработка команды /pip
+bot.command(RIR_COMMAND, async(ctx) => {
+    await GoToRabotaInRussia(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use command ${RIR_COMMAND}  timestamp: ${ctx.message.timestamp}`)
+})
+
+//Обработка команды /contacts
+bot.command(CONTACT_COMMAND, async(ctx) => {
+    await goVkGroup(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use command ${CONTACT_COMMAND}  timestamp: ${ctx.message.timestamp}`)
+})
+
+//Обработка команды /site
+bot.command(SITE_COMMAND, async(ctx) => {
+    await goVkGroup(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use command ${SITE_COMMAND}  timestamp: ${ctx.message.timestamp}`)
+})
 
 //Действие уходна на главную страницу (Приветствие бота)
 bot.action(MAIN_PAGE_ACTION, async(ctx) => {
@@ -263,6 +283,36 @@ bot.action(AS_MARKET_REVIEWS, async(ctx) => {
 bot.action(AS_OTHER_SURVEYS, async(ctx) => {
     await getAROtherSurveys(ctx)
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Опросы и исследования -> Другие опросы и исследования__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Помощь и консультации
+bot.action(HELP_CONSULT, async(ctx) => {
+    await helpConsult(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Помощь и консультации__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Часто задаваемые вопросы
+bot.action(HC_FREQUENTLY_ASKED_QUESTIONS, async(ctx) => {
+    await hcFrequentlyAskedQuestions(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Помощь и консультации -> Часто задаваемые вопросы__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Горячая линия
+bot.action(HC_HOTLINE, async(ctx) => {
+    await hcHotline(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Помощь и консультации -> Горячая линия__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Документы и бланки
+bot.action(HC_DOCUMENTS, async(ctx) => {
+    await hcDocuments(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Помощь и консультации -> Документы и бланки__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Форма обратной связи
+bot.action(HC_FEEDBACK_FORM, async(ctx) => {
+    await hcFeedbackForm(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Помощь и консультации -> Форма обратной связи__ timestamp: ${ctx.update.timestamp}`)
 })
 
 bot.catch(() => {
