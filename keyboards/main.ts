@@ -5,6 +5,7 @@ import { ABOUT_PERSONAL_CENTER } from "../actions/aboutPersonalCenters";
 import { PERSONNEL_SELECTION } from "../actions/personnelSelection";
 import { HELP_ADVICE } from "../actions/helpAdvice";
 import { REPORTING_PC } from "../actions/reportingPersonalCenter";
+import { ANANLYSTIC_RESEARCH } from "../actions/analysticResearch";
 
 export const goMainPageKeyboard = [Keyboard.button.callback('🏠 На главную', MAIN_PAGE_ACTION, {intent: 'default'})]
 
@@ -14,7 +15,7 @@ export const mainKeyboard = Keyboard.inlineKeyboard(
         [Keyboard.button.callback('Подбор персонала', PERSONNEL_SELECTION, {intent: 'default'})],
         [Keyboard.button.callback('Программы поддержки', HELP_ADVICE, {intent: 'default'})],
         [Keyboard.button.callback('Отчетность в ЦЗН', REPORTING_PC, {intent: 'default'})],
-        [Keyboard.button.callback('Аналитика и исследования', ABOUT_PERSONAL_CENTER, {intent: 'default'})],
+        [Keyboard.button.callback('Аналитика и исследования', ANANLYSTIC_RESEARCH, {intent: 'default'})],
         [Keyboard.button.callback('Помощь и консультации', ABOUT_PERSONAL_CENTER, {intent: 'default'})],
     ]
 )

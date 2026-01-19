@@ -1,0 +1,2 @@
+export const AR_ALL_RUSSIA_SURVEY = 'https://trudvsem.ru/information-pages/staffing-survey'
+export const AR_MARKET_REVIEWS_LINK = 'https://murman-zan.ru/content/%D1%80%D1%8B%D0%BD%D0%BE%D0%BA_%D1%82%D1%80%D1%83%D0%B4%D0%B0'

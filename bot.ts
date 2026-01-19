@@ -19,6 +19,9 @@ import { HELP_ADVICE, HP_DISBLED_PEOPLE, HP_RELOCATION, HP_SPECIFIC_CATEG, HP_TE
 import { getHelpAdvice, getHPDisabledPeople, getHPRelocation, getHPSpecificCateg, getHPTemporary, getHPTraining } from './commands/helpAdvice';
 import { REPORTING_PC, REPORTING_PC_ADMISSION, REPORTING_PC_BANKRUPTCY_PROCEDURE, REPORTING_PC_DOWNSIZING, REPORTING_PC_IDLE_MODE, REPORTING_PC_JOB_QUOTAS_DISABLED, REPORTING_PC_PART_TIME, REPORTING_PC_REMOTE_WORK } from './actions/reportingPersonalCenter';
 import { reportingPCAdmission, reportingPCBankruptcyProcedure, reportingPCDownsizing, reportingPCIdleMode, reportingPCJobQuotasDisabled, reportingPCPartTime, reportingPCRemoteWork, reportingPersonalCenter } from './commands/reportingInPersonalCenter';
+import { ANANLYSTIC_RESEARCH, AS_MARKET_REVIEWS, AS_OTHER_SURVEYS } from './actions/analysticResearch';
+import { getAnalysticResearch, getARMarketReviews, getAROtherSurveys, getARRussuinSurvey } from './commands/analyticsResearch';
+import { AR_ALL_RUSSIA_SURVEY } from './links/analysticResearch';
 
 // настройка перменных виртуального окружения
 dotenv.config({ path: '.env'})
@@ -236,6 +239,30 @@ bot.action(REPORTING_PC_REMOTE_WORK, async(ctx) => {
 bot.action(REPORTING_PC_ADMISSION, async(ctx) => {
     await reportingPCAdmission(ctx)
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Отчетность в ЦЗН -> Приём по направлению ЦЗН или отказ в трудоустройстве__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Опросы и исследования
+bot.action(ANANLYSTIC_RESEARCH, async(ctx) => {
+    await getAnalysticResearch(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Опросы и исследования__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Всероссийский опрос работодателей
+bot.action(AR_ALL_RUSSIA_SURVEY, async(ctx) => {
+    await getARRussuinSurvey(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Опросы и исследования -> Всероссийский опрос работодателей__ timestamp: ${ctx.update.timestamp}`)
+})
+
+// Обзоры рынка труда
+bot.action(AS_MARKET_REVIEWS, async(ctx) => {
+    await getARMarketReviews(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Опросы и исследования -> Обзоры рынка труда__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//Другие опросы и исследования
+bot.action(AS_OTHER_SURVEYS, async(ctx) => {
+    await getAROtherSurveys(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Опросы и исследования -> Другие опросы и исследования__ timestamp: ${ctx.update.timestamp}`)
 })
 
 bot.catch(() => {
