@@ -19,9 +19,8 @@ import { HELP_ADVICE, HP_DISBLED_PEOPLE, HP_RELOCATION, HP_SPECIFIC_CATEG, HP_TE
 import { getHelpAdvice, getHPDisabledPeople, getHPRelocation, getHPSpecificCateg, getHPTemporary, getHPTraining } from './commands/helpAdvice';
 import { REPORTING_PC, REPORTING_PC_ADMISSION, REPORTING_PC_BANKRUPTCY_PROCEDURE, REPORTING_PC_DOWNSIZING, REPORTING_PC_IDLE_MODE, REPORTING_PC_JOB_QUOTAS_DISABLED, REPORTING_PC_PART_TIME, REPORTING_PC_REMOTE_WORK } from './actions/reportingPersonalCenter';
 import { reportingPCAdmission, reportingPCBankruptcyProcedure, reportingPCDownsizing, reportingPCIdleMode, reportingPCJobQuotasDisabled, reportingPCPartTime, reportingPCRemoteWork, reportingPersonalCenter } from './commands/reportingInPersonalCenter';
-import { ANANLYSTIC_RESEARCH, AS_MARKET_REVIEWS, AS_OTHER_SURVEYS } from './actions/analysticResearch';
+import { ANANLYSTIC_RESEARCH, AS_MARKET_REVIEWS, AS_OTHER_SURVEYS, AS_RESEARCH_SURVEY } from './actions/analysticResearch';
 import { getAnalysticResearch, getARMarketReviews, getAROtherSurveys, getARRussuinSurvey } from './commands/analyticsResearch';
-import { AR_ALL_RUSSIA_SURVEY } from './links/analysticResearch';
 import { HC_DOCUMENTS, HC_FEEDBACK_FORM, HC_FREQUENTLY_ASKED_QUESTIONS, HC_HOTLINE, HELP_CONSULT } from './actions/supportProgram';
 import { hcDocuments, hcFeedbackForm, hcFrequentlyAskedQuestions, hcHotline, helpConsult } from './commands/supportProgram';
 
@@ -50,7 +49,7 @@ bot.hears(/^(?!\/[a-z]+$).*$/, async(ctx) =>{
 })
 
 //Обработка команд, которых нет в списке
-bot.hears(/^\/\b(?!(?:start)\b)[a-z]+\b$/, async(ctx) => {
+bot.hears(/^\/\b(?!(?:start|rir|contacts|site)\b)[a-z]+\b$/, async(ctx) => {
     const message = ctx.message; // Полученное сообщение
     await processUnclearMessage(ctx)
     logger.info(`User with id ${message.sender?.user_id} try to use command "${message.body.text}" timestamp: ${ctx.message.timestamp}`)
@@ -268,7 +267,7 @@ bot.action(ANANLYSTIC_RESEARCH, async(ctx) => {
 })
 
 // Всероссийский опрос работодателей
-bot.action(AR_ALL_RUSSIA_SURVEY, async(ctx) => {
+bot.action(AS_RESEARCH_SURVEY, async(ctx) => {
     await getARRussuinSurvey(ctx)
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Опросы и исследования -> Всероссийский опрос работодателей__ timestamp: ${ctx.update.timestamp}`)
 })
