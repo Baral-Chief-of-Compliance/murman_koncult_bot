@@ -5,3 +5,7 @@ logs
 *.js
 dist
 !ecosystem.config.js
+
+.venv
+database
+.vscode
