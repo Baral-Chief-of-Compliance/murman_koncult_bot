@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -20,17 +21,20 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-wa3s$%4ij_$y#3p(9+4s6dz0dc)i_9c_d0z-b^a&#nbhicrw+a'
+SECRET_KEY = os.getenv('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = bool(int(os.getenv('DEBUG')))
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
+
+if not DEBUG:
+    CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS').split(',')
 
 
 # Application definition
 
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +42,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+THIRD_PARTY_APPS = [
+    'django.contrib.postgres',
+]
+
+LOCAL_APPS = [
+    'feedback_control_app',
+]
+
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -74,8 +88,12 @@ WSGI_APPLICATION = 'max_bot_control_panel.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.getenv('POSTGRES_DB'),
+        'USER': os.getenv('POSTGRES_USER'),
+        'PASSWORD': os.getenv('POSTGRES_PASS'),
+        'HOST': os.getenv('POSTGRES_HOST'),
+        'PORT': os.getenv('POSTGRES_PORT'),
     }
 }
 
@@ -102,9 +120,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'ru-RU'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -114,4 +132,74 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-STATIC_URL = 'static/'
+if DEBUG:
+    STATIC_URL = 'static/'
+else:
+    STATIC_URL = '/api/static/'
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+if DEBUG:
+    MEDIA_URL = 'media/'
+else:
+    MEDIA_URL = '/api/media/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+LOGLEVEL = os.getenv('LOGLEVEL').upper()
+
+LOGGING = {
+	'version': 1,
+	'disable_existing_loggers': False,
+	'formatters': {
+		'main_format': {
+			'format': '{asctime} - {levelname} - {module} - {filename} - {message}',
+			'style': '{'
+		},
+	},
+
+	'handlers': {
+		'console': {
+			'class': 'logging.StreamHandler',
+			'formatter': 'main_format',
+		},
+
+		'error_file': {
+			'level': 'ERROR',
+			'class': 'logging.FileHandler',
+			'formatter': 'main_format',
+			'filename': os.path.join(BASE_DIR, 'logs', 'django-project-error.log')
+		},
+
+		'info_file': {
+			'level': 'INFO',
+			'class': 'logging.FileHandler',
+			'formatter': 'main_format',
+			'filename': os.path.join(BASE_DIR, 'logs', 'django-project-info.log')
+		},
+
+		'combined_file': {
+			'class': 'logging.FileHandler',
+			'formatter': 'main_format',
+			'filename': os.path.join(BASE_DIR, 'logs', 'django-project-combined.log'),
+		},
+
+	},
+
+  
+
+	'loggers': {
+		'main': {
+			'handlers': ['console', 'combined_file', 'info_file', 'error_file'],
+			'level': LOGLEVEL,
+			'propagate': True
+		},
+		
+		'django': {
+			'handlers': ['console', 'combined_file', 'info_file', 'error_file'],
+			'level': LOGLEVEL,
+			'propagate': False,
+		},
+	},
+}

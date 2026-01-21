@@ -1,0 +1,19 @@
+FROM python:3.13-slim
+
+RUN mkdir -p /home/django-app
+
+WORKDIR /home/django-app
+
+COPY ./requirements.txt .
+
+RUN pip install --no-cache-dir -r ./requirements.txt
+
+#установка зависимостей
+COPY . .
+
+#chmod +x
+RUN chmod +x ./start.dev.sh
+
+ENTRYPOINT ["/bin/sh", "-c", "sleep 60 && ./start.dev.sh"]
+
+EXPOSE 8000

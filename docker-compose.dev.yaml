@@ -3,7 +3,7 @@ version: '3.7'
 services:
   database:
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U psadmin -d kiosk"]
+      test: ["CMD-SHELL", "pg_isready -U psadmin -d max_feedback"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -22,9 +22,26 @@ services:
       - ./database/data:/var/lib/postgresql/data
 
     networks:
-     - kiosk-network
+     - murman-koncult-bot-network
+
+  django-app:
+    container_name: django-app
+    build:
+      context: ./django_app
+      dockerfile: Dockerfile.dev
+    env_file: ./dev-env/django_app.env
+
+    volumes:
+      - /logs:/max_bot_control_panel/logs
+    ports:
+      - 8000:8000
+    depends_on:
+      - database
+
+    networks:
+      - murman-koncult-bot-network
 
 
 networks:
-  kiosk-network:
+  murman-koncult-bot-network:
     driver: bridge
