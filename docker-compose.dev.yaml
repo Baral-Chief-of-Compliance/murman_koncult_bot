@@ -32,7 +32,7 @@ services:
     env_file: ./dev-env/django_app.env
 
     volumes:
-      - /django_logs:/max_bot_control_panel/logs
+      - ./django_logs:/max_bot_control_panel/logs
     ports:
       - 8000:8000
     depends_on:

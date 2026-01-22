@@ -147,7 +147,7 @@ else:
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-LOGLEVEL = os.getenv('LOGLEVEL').upper()
+LOGLEVEL = os.getenv('LOGLEVEL', 'INFO').upper()
 
 LOGGING = {
 	'version': 1,

@@ -31,6 +31,8 @@ else
 fi
 
   
+echo "Настройка информации о боте Кадровый навигатор 51"
+python3 ./max_bot_control_panel/manage.py create_max_bot
 
 echo "Запуск серверной части киосков ЦЗН МО..."
 

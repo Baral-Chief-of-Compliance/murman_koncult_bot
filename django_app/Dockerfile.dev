@@ -8,11 +8,19 @@ COPY ./requirements.txt .
 
 RUN pip install --no-cache-dir -r ./requirements.txt
 
+
+
 #установка зависимостей
 COPY . .
 
+# Проверяем что файл скопировался
+RUN ls -la start.dev.sh
+
+# Меняем формат файла на Unix (на всякий случай)
+RUN sed -i 's/\r$//' start.dev.sh
+
 RUN chmod +x ./start.dev.sh
 
-ENTRYPOINT ["/bin/sh", "-c", "sleep 60 && ./start.dev.sh"]
+ENTRYPOINT ["/bin/sh", "-c", "sleep 60 && /home/django-app/start.dev.sh"]
 
 EXPOSE 8000
