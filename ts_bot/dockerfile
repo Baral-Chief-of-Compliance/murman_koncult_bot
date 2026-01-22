@@ -1,17 +1,21 @@
 FROM node:24-alpine
 
+# Устанавливаем pm2 глобально
+RUN npm install -g pm2
 
-RUN mkdir -p /home/max_bot_ministry_of_justice
+RUN mkdir -p /home/murman_konsult_bot
 
-WORKDIR /home/max_bot_ministry_of_justice
+WORKDIR /home/murman_konsult_bot
+
+COPY package*.json ./
+RUN npm ci --only=production
 
 COPY . .
 
 # Создаем директорию для логов
 RUN mkdir -p logs && chmod 777 logs
 
-RUN npm install
-
 RUN npm run build
 
-CMD ["npm", "run", "start"]
+# Используем pm2-runtime для Docker
+CMD ["pm2-runtime", "start", "ecosystem.config.js", "--env", "production"]

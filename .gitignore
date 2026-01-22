@@ -1,6 +1,8 @@
 .env
 node_modules
 bot.log
+bot_logs
+django_logs
 logs
 *.js
 dist

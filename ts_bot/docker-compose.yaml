@@ -8,4 +8,4 @@ services:
     restart: always
     env_file: .env
     volumes:
-      - ./logs:/home/max_bot_ministry_of_justice/logs
+      - ./logs:/home/murman_konsult_bot/logs

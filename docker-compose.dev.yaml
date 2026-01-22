@@ -32,12 +32,25 @@ services:
     env_file: ./dev-env/django_app.env
 
     volumes:
-      - /logs:/max_bot_control_panel/logs
+      - /django_logs:/max_bot_control_panel/logs
     ports:
       - 8000:8000
     depends_on:
       - database
 
+    networks:
+      - murman-koncult-bot-network
+
+  bot:
+    build:
+      context: ./ts_bot
+      dockerfile: dockerfile
+    restart: always
+    env_file: ./dev-env/.env
+    volumes:
+      - ./bot_logs:/home/murman_konsult_bot/logs
+    depends_on:
+      - django-app
     networks:
       - murman-koncult-bot-network
 
