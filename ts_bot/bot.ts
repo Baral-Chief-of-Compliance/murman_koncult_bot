@@ -28,7 +28,9 @@ import { hcDocuments, hcFeedbackForm, hcFrequentlyAskedQuestions, hcHotline, hel
 dotenv.config({ path: '.env'})
 
 //Установка глобального прокси для работы бота
-// setGlobalDispatcher(proxyAgent);
+if (process.env.PROXY_USE==="1"){
+    setGlobalDispatcher(proxyAgent);
+}
 
 if (!process.env.BOT_TOKEN){
     logger.error('Token not provided')

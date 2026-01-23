@@ -1,0 +1,10 @@
+version: "3.7"
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: dockerfile
+    restart: always
+    env_file: .env
+    volumes:
+      - ./logs:/home/murman_konsult_bot/logs
