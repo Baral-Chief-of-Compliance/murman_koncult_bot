@@ -14,4 +14,7 @@ urlpatterns = [
     path("api/v1.0/", include(router.urls)),
     path('login/', views.AuthenticationFormView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
+    path('', views.MabBotListView.as_view(), name='index'),
+    path('<int:pk>/', views.MaxBotDetailView.as_view(), name='max_bot_detail'),
+    path('<int:pk>/civilian_request/<int:cr_id>/', views.AnswerCivilianRequestView.as_view(), name='answer_civilian_request')
 ]

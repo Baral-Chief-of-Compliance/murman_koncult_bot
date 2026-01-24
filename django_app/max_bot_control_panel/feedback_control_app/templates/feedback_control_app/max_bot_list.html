@@ -1,0 +1,230 @@
+{% extends 'feedback_control_app/base.html' %}
+
+{% load static %}
+
+{% block title %}Список ботов{% endblock %}
+
+{% block content %}
+<style>
+    .bots-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .bot-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        transition: all 0.2s ease;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+    
+    .bot-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+    }
+    
+    .bot-info {
+        flex: 1;
+    }
+    
+    .bot-name {
+        color: var(--indigo);
+        font-weight: 600;
+        font-size: 18px;
+        margin-bottom: 6px;
+    }
+    
+    .bot-url {
+        color: #666;
+        font-size: 14px;
+        word-break: break-all;
+    }
+    
+    .bot-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+    }
+    
+    .requests-count {
+        background-color: var(--indigo-1);
+        color: var(--indigo);
+        font-weight: 600;
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 20px;
+        min-width: 120px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .requests-count .number {
+        font-size: 20px;
+        font-weight: 700;
+        line-height: 1;
+        margin-bottom: 2px;
+    }
+    
+    .requests-count .text {
+        font-size: 12px;
+        font-weight: 500;
+        opacity: 0.8;
+    }
+    
+    .bot-buttons {
+        display: flex;
+        gap: 12px;
+    }
+    
+    .bot-button {
+        background-color: var(--orange);
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        white-space: nowrap;
+    }
+    
+    .bot-button:hover {
+        background-color: var(--orange-7);
+        color: white;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(232, 76, 25, 0.2);
+    }
+    
+    .bot-button.max:before {
+        content: "🤖";
+    }
+    
+    .bot-button.requests {
+        background-color: var(--indigo);
+        color: white;
+    }
+    
+    .bot-button.requests:before {
+        content: "📋";
+    }
+    
+    .bot-button.requests:hover {
+        background-color: var(--indigo-7);
+        box-shadow: 0 4px 12px rgba(22, 79, 164, 0.2);
+    }
+    
+    .page-header {
+        margin-bottom: 32px;
+    }
+    
+    .page-title {
+        color: var(--indigo);
+        font-weight: 600;
+        font-size: 28px;
+        margin-bottom: 8px;
+    }
+    
+    .page-subtitle {
+        color: #666;
+        font-size: 16px;
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .empty-state-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state-title {
+        color: var(--indigo);
+        font-weight: 600;
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+    
+    .empty-state-text {
+        color: #666;
+        font-size: 16px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    @media (max-width: 768px) {
+        .bot-card {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+        }
+        
+        .bot-actions {
+            width: 100%;
+            justify-content: space-between;
+        }
+        
+        .bot-buttons {
+            flex-wrap: wrap;
+        }
+    }
+</style>
+
+<div class="bots-container">
+    <div class="page-header">
+        <h1 class="page-title">Макс-боты</h1>
+        <p class="page-subtitle">Управление ботами и просмотр статистики обращений</p>
+    </div>
+    
+    {% if max_bots %}
+        {% for mb in max_bots %}
+        <div class="bot-card">
+            <div class="bot-info">
+                <div class="bot-name">{{ mb.name }}</div>
+                <div class="bot-url">{{ mb.max_url }}</div>
+            </div>
+            
+            <div class="bot-actions">
+                <div class="requests-count">
+                    <span class="number">{{ mb.civilian_requests.count }}</span>
+                    <span class="text">обращений</span>
+                </div>
+                
+                <div class="bot-buttons">
+                    <a href="{{ mb.max_url }}" target="_blank" class="bot-button max">
+                        Бот в Max
+                    </a>
+                    
+                    <a href="{% url 'feedback_control_app:max_bot_detail' mb.pk %}" class="bot-button requests">
+                        Перейти к обращениям
+                    </a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">🤖</div>
+            <h3 class="empty-state-title">Боты не найдены</h3>
+            <p class="empty-state-text">Добавьте первого бота для начала работы с системой</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

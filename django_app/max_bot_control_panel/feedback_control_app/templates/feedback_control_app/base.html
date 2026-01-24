@@ -1,28 +1,166 @@
 {% load static %}
-
 <!DOCTYPE html>
-
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-
-<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-
-<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
-
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
-
-<html lang = "ru">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Управление Max ботом ЦЗН МО</title>
-        <meta name="description" content="">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel = "stylesheet" href = {% static 'feedback_control_app/style.css' %} type = "text/css">
-        <link rel = "stylesheet" href = {% static 'feedback_control_app/fonts-style.css' %} type = "text/css">
-    </head>
-
-    <body>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Панель ответов на обращения{% endblock %}</title>
+    <style>
+        :root {
+            /* Индиго палитра */
+            --indigo: #164FA4;
+            --indigo-1: #EDEDFB;
+            --indigo-2: #D8DBF6;
+            --indigo-3: #C4C8EF;
+            --indigo-4: #ACB5E6;
+            --indigo-5: #96A1DC;
+            --indigo-6: #7D8ECF;
+            --indigo-7: #667BC3;
+            --indigo-8: #4B6BB8;
+            --indigo-9: #345CAE;
+            
+            /* Синяя палитра */
+            --blue: #7CBDE2;
+            --blue-1: #F5F9FE;
+            --blue-2: #EAF3FC;
+            --blue-3: #DEEDFA;
+            --blue-4: #D1E6F7;
+            --blue-5: #C4DFF4;
+            --blue-6: #B8D9F1;
+            --blue-7: #ABD2ED;
+            --blue-8: #9CCCEA;
+            --blue-9: #8EC5E6;
+            
+            /* Оранжевая палитра */
+            --orange: #E84C19;
+            --orange-1: #FFF2EA;
+            --orange-2: #FFE4D2;
+            --orange-3: #FFD2BA;
+            --orange-4: #FFC1A1;
+            --orange-5: #FEB189;
+            --orange-6: #FDA074;
+            --orange-7: #FB8E5A;
+            --orange-8: #F37743;
+            --orange-9: #ED622D;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Montserrat', sans-serif;
+        }
+        
+        body {
+            background-color: #F5F5F5;
+            min-height: 100vh;
+            padding-top: 60px; /* Высота навигационной панели */
+        }
+        
+        /* Навигационная панель */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            display: flex;
+            align-items: center;
+            padding: 0 24px;
+            z-index: 1000;
+        }
+        
+        /* Название слева */
+        .navbar-brand {
+            color: var(--indigo);
+            font-weight: 600;
+            font-size: 18px;
+            text-decoration: none;
+        }
+        
+        /* Навигационные ссылки справа */
+        .navbar-nav {
+            display: flex;
+            align-items: center;
+            margin-left: auto;
+            gap: 20px;
+        }
+        
+        .nav-link {
+            color: #333;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .nav-link:hover {
+            color: var(--indigo);
+            background-color: var(--indigo-1);
+        }
+        
+        /* Стили для кнопки выхода */
+        .logout-btn {
+            background-color: var(--orange);
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 500;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .logout-btn:hover {
+            background-color: var(--orange-7);
+            transform: translateY(-1px);
+        }
+        
+        /* Имя пользователя */
+        .username {
+            color: var(--indigo);
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        /* Основной контент */
+        .main-content {
+            padding: 24px;
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'feedback_control_app/fonts-style.css' %}" type="text/css">
+</head>
+<body>
+    <!-- Навигационная панель -->
+    <nav class="navbar">
+        <!-- Название слева -->
+        <a href="#" class="navbar-brand">Панель ответов на обращения</a>
+        
+        <!-- Навигация справа -->
+        <div class="navbar-nav">
+            <!-- Ссылка на боты -->
+            <a href="{% url 'feedback_control_app:index' %}" class="nav-link">Боты</a>
+            
+            <!-- Имя пользователя -->
+            {% if user.is_authenticated %}
+                <span class="username">{{ user.username }}</span>
+                
+                <!-- Кнопка выхода -->
+                <a href="{% url 'feedback_control_app:logout' %}" class="logout-btn">Выйти</a>
+            {% endif %}
+        </div>
+    </nav>
+    
+    <!-- Основной контент -->
+    <div class="main-content">
         {% block content %}{% endblock %}
-        <script src="" async defer></script>
-    </body>
+    </div>
+</body>
 </html>

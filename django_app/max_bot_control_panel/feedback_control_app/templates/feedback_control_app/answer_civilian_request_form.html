@@ -1,0 +1,328 @@
+{% extends 'feedback_control_app/base.html' %}
+
+{% load static %}
+
+{% block title %}Ответ на обращение{% endblock %}
+
+{% block content %}
+<style>
+    .answer-form-container {
+        max-width: 800px;
+        margin: 0 auto;
+    }
+    
+    .form-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    
+    .page-title {
+        color: var(--indigo);
+        font-weight: 600;
+        font-size: 28px;
+    }
+    
+    .back-button {
+        background-color: var(--indigo-2);
+        color: var(--indigo);
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .back-button:before {
+        content: "←";
+    }
+    
+    .back-button:hover {
+        background-color: var(--indigo-3);
+    }
+    
+    /* Карточка с оригинальным обращением */
+    .original-request-card {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        margin-bottom: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .request-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .request-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .user-id {
+        background-color: var(--indigo-1);
+        color: var(--indigo);
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+    
+    .request-date {
+        color: #666;
+        font-size: 14px;
+    }
+    
+    .request-message {
+        background-color: var(--blue-1);
+        padding: 16px;
+        border-radius: 8px;
+        font-size: 15px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+    }
+    
+    /* Форма ответа */
+    .answer-form-card {
+        background: white;
+        border-radius: 12px;
+        padding: 24px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .form-title {
+        color: var(--indigo);
+        font-weight: 600;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .form-group {
+        margin-bottom: 24px;
+    }
+    
+    .form-group label {
+        display: block;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
+        font-size: 14px;
+    }
+    
+    .form-group textarea {
+        width: 100%;
+        min-height: 200px;
+        padding: 16px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        font-family: 'Montserrat', sans-serif;
+        font-size: 15px;
+        line-height: 1.5;
+        resize: vertical;
+        transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--indigo);
+        box-shadow: 0 0 0 3px rgba(22, 79, 164, 0.1);
+    }
+    
+    .form-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 16px;
+    }
+    
+    .submit-button {
+        background-color: var(--orange);
+        color: white;
+        border: none;
+        padding: 12px 32px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .submit-button:before {
+        content: "✉️";
+    }
+    
+    .submit-button:hover {
+        background-color: var(--orange-7);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(232, 76, 25, 0.2);
+    }
+    
+    .cancel-button {
+        background-color: var(--indigo-2);
+        color: var(--indigo);
+        text-decoration: none;
+        padding: 12px 32px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 16px;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .cancel-button:before {
+        content: "←";
+    }
+    
+    .cancel-button:hover {
+        background-color: var(--indigo-3);
+    }
+    
+    /* Ошибки формы */
+    .error-message {
+        color: var(--orange);
+        font-size: 14px;
+        margin-top: 8px;
+    }
+    
+    .form-errors {
+        background-color: rgba(232, 76, 25, 0.1);
+        border: 1px solid rgba(232, 76, 25, 0.3);
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 24px;
+        color: var(--orange);
+    }
+</style>
+
+<div class="answer-form-container">
+    <!-- Шапка с кнопкой назад -->
+    <div class="form-header">
+        <h1 class="page-title">Ответ на обращение</h1>
+        <a href="{% url 'feedback_control_app:max_bot_detail' pk=civilian_request.max_bot.pk %}" class="back-button">
+            Назад к обращениям
+        </a>
+    </div>
+    
+    <!-- Карточка с оригинальным обращением -->
+    <div class="original-request-card">
+        <div class="request-header">
+            <div class="request-user">
+                <span class="user-id">ID: {{ civilian_request.user_id }}</span>
+                <span class="request-date">{{ civilian_request.date_of_create|date:"d.m.Y H:i" }}</span>
+            </div>
+            
+            <div class="request-status">
+                {% if civilian_request.answer_status %}
+                    <span style="color: #2ecc71;">✓ Уже отвечено</span>
+                {% else %}
+                    <span style="color: var(--orange);">⏱ Ожидает ответа</span>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="request-message">
+            {{ civilian_request.msg|default:"Сообщение отсутствует" }}
+        </div>
+    </div>
+    
+    <!-- Форма ответа -->
+    <div class="answer-form-card">
+        <h2 class="form-title">Ваш ответ</h2>
+        
+        <!-- Вывод ошибок формы -->
+        {% if form.errors %}
+        <div class="form-errors">
+            Пожалуйста, проверьте правильность заполнения формы.
+        </div>
+        {% endif %}
+        
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="id_msg">Текст ответа *</label>
+                <textarea 
+                    name="msg" 
+                    id="id_msg" 
+                    placeholder="Введите ваш ответ пользователю..."
+                    {% if civilian_request.answer_status %}disabled{% endif %}
+                >{% if form.msg.value %}{{ form.msg.value }}{% endif %}</textarea>
+                
+                {% if form.msg.errors %}
+                <div class="error-message">
+                    {{ form.msg.errors }}
+                </div>
+                {% endif %}
+                
+                {% if civilian_request.answer_status %}
+                <div class="error-message">
+                    ⚠️ На это обращение уже дан ответ. Вы не можете изменить ответ.
+                </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-actions">
+                <a href="{% url 'feedback_control_app:max_bot_detail' pk=civilian_request.max_bot.pk %}" class="cancel-button">
+                    Отмена
+                </a>
+                
+                <button type="submit" class="submit-button" {% if civilian_request.answer_status %}disabled{% endif %}>
+                    Отправить ответ
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Автоматическое изменение высоты textarea
+        const textarea = document.getElementById('id_msg');
+        
+        function adjustHeight() {
+            textarea.style.height = 'auto';
+            textarea.style.height = (textarea.scrollHeight) + 'px';
+        }
+        
+        textarea.addEventListener('input', adjustHeight);
+        adjustHeight(); // Начальная настройка
+        
+        // Предупреждение при закрытии страницы с несохраненными данными
+        let formChanged = false;
+        
+        textarea.addEventListener('input', function() {
+            formChanged = true;
+        });
+        
+        window.addEventListener('beforeunload', function(e) {
+            if (formChanged && !textarea.disabled) {
+                e.preventDefault();
+                e.returnValue = '';
+            }
+        });
+        
+        // Отправка формы
+        document.querySelector('form').addEventListener('submit', function() {
+            formChanged = false;
+        });
+    });
+</script>
+
+{% endblock %}

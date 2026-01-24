@@ -1,0 +1,272 @@
+{% extends 'feedback_control_app/base.html' %}
+
+{% load static %}
+
+{% block title %}Обращения бота {{ max_bot.name }}{% endblock %}
+
+{% block content %}
+<style>
+    .bot-detail-container {
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    
+    .bot-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    
+    .bot-title {
+        color: var(--indigo);
+        font-weight: 600;
+        font-size: 28px;
+    }
+    
+    .bot-url {
+        color: #666;
+        font-size: 16px;
+        margin-top: 4px;
+    }
+    
+    .back-button {
+        background-color: var(--indigo-2);
+        color: var(--indigo);
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .back-button:before {
+        content: "←";
+    }
+    
+    .back-button:hover {
+        background-color: var(--indigo-3);
+    }
+    
+    /* Карточка обращения */
+    .request-card {
+        background: white;
+        border-radius: 12px;
+        padding: 20px 24px;
+        margin-bottom: 16px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        transition: all 0.2s ease;
+    }
+    
+    .request-card:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    
+    .request-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 16px;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+    
+    .request-user {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+    
+    .user-id {
+        background-color: var(--indigo-1);
+        color: var(--indigo);
+        font-weight: 600;
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+    
+    .request-date {
+        color: #666;
+        font-size: 14px;
+    }
+    
+    .request-status {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 14px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    
+    .status-answered {
+        background-color: rgba(46, 204, 113, 0.1);
+        color: #2ecc71;
+    }
+    
+    .status-answered:before {
+        content: "✓";
+    }
+    
+    .status-pending {
+        background-color: rgba(232, 76, 25, 0.1);
+        color: var(--orange);
+    }
+    
+    .status-pending:before {
+        content: "⏱";
+    }
+    
+    .request-message {
+        background-color: var(--blue-1);
+        padding: 16px;
+        border-radius: 8px;
+        margin-bottom: 16px;
+        font-size: 15px;
+        line-height: 1.5;
+    }
+    
+    .request-actions {
+        display: flex;
+        justify-content: flex-end;
+        gap: 12px;
+    }
+    
+    .answer-button {
+        background-color: var(--orange);
+        color: white;
+        text-decoration: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 14px;
+        transition: all 0.2s ease;
+        border: none;
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+    
+    .answer-button:before {
+        content: "✉️";
+    }
+    
+    .answer-button:hover {
+        background-color: var(--orange-7);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(232, 76, 25, 0.2);
+    }
+    
+    .answer-button.answered {
+        background-color: var(--indigo-3);
+        color: var(--indigo);
+        cursor: default;
+    }
+    
+    .answer-button.answered:hover {
+        background-color: var(--indigo-3);
+        transform: none;
+        box-shadow: none;
+    }
+    
+    .answer-button.answered:before {
+        content: "✓";
+    }
+    
+    .empty-state {
+        text-align: center;
+        padding: 60px 20px;
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+    
+    .empty-state-icon {
+        font-size: 48px;
+        margin-bottom: 20px;
+    }
+    
+    .empty-state-title {
+        color: var(--indigo);
+        font-weight: 600;
+        font-size: 20px;
+        margin-bottom: 12px;
+    }
+    
+    .empty-state-text {
+        color: #666;
+        font-size: 16px;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+</style>
+
+<div class="bot-detail-container">
+    <!-- Шапка с названием бота и кнопкой назад -->
+    <div class="bot-header">
+        <div>
+            <h1 class="bot-title">{{ max_bot.name }}</h1>
+            <div class="bot-url">{{ max_bot.max_url }}</div>
+        </div>
+        <a href="{% url 'feedback_control_app:index' %}" class="back-button">
+            Назад к списку ботов
+        </a>
+    </div>
+    
+    <!-- Список обращений -->
+    {% if max_bot.civilian_requests.all %}
+        {% for cr in max_bot.civilian_requests.all %}
+        <div class="request-card">
+            <!-- Заголовок с ID пользователя и датой -->
+            <div class="request-header">
+                <div class="request-user">
+                    <span class="user-id">ID: {{ cr.user_id }}</span>
+                    <span class="request-date">{{ cr.date_of_create|date:"d.m.Y H:i" }}</span>
+                </div>
+                
+                <!-- Статус обращения -->
+                <div class="request-status {% if cr.answer_status %}status-answered{% else %}status-pending{% endif %}">
+                    {% if cr.answer_status %}Отвечено{% else %}Ожидает ответа{% endif %}
+                </div>
+            </div>
+            
+            <!-- Сообщение пользователя -->
+            <div class="request-message">
+                {{ cr.msg|default:"Сообщение отсутствует"|linebreaks }}
+            </div>
+            
+            <!-- Кнопки действий -->
+            <div class="request-actions">
+                {% if cr.answer_status %}
+                    <div class="answer-button answered"> 
+                        Отвечено
+                    </div>
+                {% else %}
+                    <a href="{% url 'feedback_control_app:answer_civilian_request' max_bot.pk cr.id %}" 
+                        class="answer-button {% if cr.answer_status %}answered{% endif %}">
+                        Ответить
+                    </a>
+                {% endif %}
+
+            </div>
+        </div>
+        {% endfor %}
+    {% else %}
+        <div class="empty-state">
+            <div class="empty-state-icon">📭</div>
+            <h3 class="empty-state-title">Обращений пока нет</h3>
+            <p class="empty-state-text">Когда пользователи будут писать боту, обращения появятся здесь</p>
+        </div>
+    {% endif %}
+</div>
+
+{% endblock %}

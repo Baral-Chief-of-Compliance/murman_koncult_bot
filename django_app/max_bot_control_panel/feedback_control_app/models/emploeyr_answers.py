@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from .civilian_request import CivilianRequest
 
@@ -36,3 +38,9 @@ class EmploeyrAnswer(models.Model):
         verbose_name = 'Ответ сотрудника на обращение'
         verbose_name_plural = 'Ответы сотрудников на обращения'
 
+
+@receiver(post_save, sender=EmploeyrAnswer)
+def change_answer_status_civilian_request(sender, instance, **kwargs):
+    civilian_request : CivilianRequest = instance.civilian_request
+    civilian_request.answer_status = True
+    civilian_request.save(update_fields=['answer_status'])
