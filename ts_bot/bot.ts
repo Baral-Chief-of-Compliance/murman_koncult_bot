@@ -30,6 +30,9 @@ dotenv.config({ path: '.env'})
 //Установка глобального прокси для работы бота
 if (process.env.PROXY_USE==="1"){
     setGlobalDispatcher(proxyAgent);
+    logger.info('Bot use proxy')
+} else {
+    logger.info('Bot don`t use proxy')
 }
 
 if (!process.env.BOT_TOKEN){

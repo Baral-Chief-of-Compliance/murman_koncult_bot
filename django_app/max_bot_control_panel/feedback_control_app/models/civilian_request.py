@@ -46,4 +46,3 @@ class CivilianRequest(models.Model):
     class Meta:
         verbose_name = 'Обращение гражданина'
         verbose_name_plural = 'Обращения граждан'
-    

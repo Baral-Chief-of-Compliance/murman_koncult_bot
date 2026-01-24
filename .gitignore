@@ -7,6 +7,7 @@ logs
 *.js
 dist
 !ecosystem.config.js
+__pycache__
 
 .venv
 database

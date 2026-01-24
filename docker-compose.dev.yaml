@@ -16,7 +16,7 @@ services:
     env_file:
       - ./dev-env/database.env
 
-    image: postgres:17.6-alpine
+    image: postgres:17.6-trixie
 
     volumes:
       - ./database/data:/var/lib/postgresql/data
@@ -32,7 +32,8 @@ services:
     env_file: ./dev-env/django_app.env
 
     volumes:
-      - ./django_logs:/max_bot_control_panel/logs
+      - ./django_app:/home/django-app
+      - ./django_logs:/home/django-app/logs
     ports:
       - 8000:8000
     depends_on:
@@ -41,18 +42,18 @@ services:
     networks:
       - murman-koncult-bot-network
 
-  bot:
-    build:
-      context: ./ts_bot
-      dockerfile: dockerfile
-    restart: always
-    env_file: ./dev-env/.env
-    volumes:
-      - ./bot_logs:/home/murman_konsult_bot/logs
-    depends_on:
-      - django-app
-    networks:
-      - murman-koncult-bot-network
+  # bot:
+  #   build:
+  #     context: ./ts_bot
+  #     dockerfile: dockerfile
+  #   restart: always
+  #   env_file: ./dev-env/.env
+  #   volumes:
+  #     - ./bot_logs:/home/murman_konsult_bot/logs
+  #   depends_on:
+  #     - django-app
+  #   networks:
+  #     - murman-koncult-bot-network
 
 
 networks:
