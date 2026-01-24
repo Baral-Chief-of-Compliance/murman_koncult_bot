@@ -1,0 +1,388 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Панель ответов на обращения</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #F5F5F5;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* Контейнер для летающих картинок */
+        #floating-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        .floating-image {
+            position: absolute;
+            width: 120px;
+            height: 120px;
+            opacity: 0.15;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+        }
+        
+        /* Анимации для разных траекторий */
+        @keyframes float1 {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(200px, 150px) rotate(90deg); }
+            50% { transform: translate(400px, 50px) rotate(180deg); }
+            75% { transform: translate(100px, 300px) rotate(270deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+        
+        @keyframes float2 {
+            0% { transform: translate(100vw, 100vh) rotate(0deg); }
+            25% { transform: translate(calc(100vw - 300px), calc(100vh - 200px)) rotate(-90deg); }
+            50% { transform: translate(calc(100vw - 500px), calc(100vh - 100px)) rotate(-180deg); }
+            75% { transform: translate(calc(100vw - 150px), calc(100vh - 300px)) rotate(-270deg); }
+            100% { transform: translate(100vw, 100vh) rotate(-360deg); }
+        }
+        
+        @keyframes float3 {
+            0% { transform: translate(50vw, 0) rotate(0deg); }
+            33% { transform: translate(30vw, 80vh) rotate(120deg); }
+            66% { transform: translate(70vw, 40vh) rotate(240deg); }
+            100% { transform: translate(50vw, 0) rotate(360deg); }
+        }
+        
+        @keyframes float4 {
+            0% { transform: translate(0, 50vh) rotate(0deg); }
+            33% { transform: translate(80vw, 70vh) rotate(-120deg); }
+            66% { transform: translate(20vw, 20vh) rotate(-240deg); }
+            100% { transform: translate(0, 50vh) rotate(-360deg); }
+        }
+        
+        /* Основной контейнер */
+        .login-container {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+        }
+        
+        /* Белый квадрат */
+        .login-box {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+        
+        .login-header {
+            margin-bottom: 30px;
+        }
+        
+        .login-header h1 {
+            color: #333;
+            font-weight: 600;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+        
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* Стили для формы */
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+            font-size: 14px;
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: #4a6cf7;
+            box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+        }
+        
+        /* Стили для input групп с иконками */
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        
+        .input-group-prepend {
+            display: flex;
+        }
+        
+        .input-group-text {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            background-color: #4a6cf7;
+            border: 1px solid #4a6cf7;
+            border-radius: 8px 0 0 8px;
+            color: white;
+        }
+        
+        .input-group-text i {
+            width: 20px;
+            text-align: center;
+        }
+        
+        .input-group input {
+            flex: 1;
+            border-radius: 0 8px 8px 0;
+            border-left: none;
+        }
+        
+        .input-group input:focus {
+            border-left: none;
+        }
+        
+        /* Кнопка входа */
+        .login-button {
+            width: 100%;
+            padding: 14px;
+            background-color: #4a6cf7;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+        }
+        
+        .login-button:hover {
+            background-color: #3a5ce5;
+            transform: translateY(-2px);
+        }
+        
+        .login-button:active {
+            transform: translateY(0);
+        }
+        
+        /* Сообщения об ошибках */
+        .error-message {
+            color: #ff4757;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .alert-danger {
+            background-color: #ffeaea;
+            border: 1px solid #ffcccc;
+            border-radius: 8px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+            color: #ff4757;
+            font-size: 14px;
+        }
+        
+        .errorlist {
+            list-style: none;
+            color: #ff4757;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .errorlist li {
+            margin-bottom: 5px;
+        }
+        
+        /* Медиа-запросы для адаптивности */
+        @media (max-width: 480px) {
+            .login-box {
+                padding: 30px 20px;
+            }
+            
+            .login-header h1 {
+                font-size: 20px;
+            }
+            
+            .floating-image {
+                width: 80px;
+                height: 80px;
+            }
+        }
+    </style>
+    <link rel="stylesheet" href="{% static 'feedback_control_app/fonts-style.css' %}" type="text/css">
+    <!-- Font Awesome для иконок -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Контейнер для летающих картинок -->
+    <div id="floating-container"></div>
+    
+    <!-- Основной контейнер для формы -->
+    <div class="login-container">
+        <div class="login-box">
+            <div class="login-header">
+                <h1>Панель ответов на обращения</h1>
+                <p>Система обработки обращений граждан через бот Max. Авторизуйтесь для доступа к панели управления.</p>
+            </div>
+            
+            <!-- Сообщения об ошибках -->
+            {% if form.errors %}
+            <div class="alert-danger">
+                Пожалуйста, введите правильные имя пользователя и пароль. Оба поля могут быть чувствительны к регистру.
+            </div>
+            {% endif %}
+            
+            {% if next %}
+                {% if user.is_authenticated %}
+                <div class="alert-danger">
+                    У вашей учетной записи нет доступа к этой странице. Чтобы продолжить,
+                    пожалуйста, войдите с учетной записью, которая имеет доступ.
+                </div>
+                {% else %}
+                <div class="alert-danger">
+                    Пожалуйста, войдите, чтобы увидеть эту страницу.
+                </div>
+                {% endif %}
+            {% endif %}
+            
+            <form method="post" action="{% url 'feedback_control_app:login' %}">
+                {% csrf_token %}
+                
+                <!-- Поле для логина с иконкой -->
+                <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-primary border-primary">
+                            <i class="fas fa-user text-white"></i>
+                        </span>
+                    </div>
+                    {{ form.username }}
+                </div>
+                
+                <!-- Поле для пароля с иконкой -->
+                <div class="input-group form-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text bg-primary border-primary">
+                            <i class="fas fa-key text-white"></i>
+                        </span>
+                    </div>
+                    {{ form.password }}
+                </div>
+                
+                <!-- Кнопка входа -->
+                <div class="form-group">
+                    <input type="submit" value="Войти" class="login-button">
+                </div>
+                
+                <input type="hidden" name="next" value="{{ next }}">
+            </form>
+            
+            <!-- Сообщение об ошибке для JS валидации -->
+            <div id="errorMessage" class="error-message" style="display: none;">
+                Неверный логин или пароль. Попробуйте снова.
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Создаем летающие картинки
+        function createFloatingImages() {
+            const container = document.getElementById('floating-container');
+            const imageTypes = [
+                "{% static 'feedback_control_app/assets/imgs/czn-logo.png' %}",
+                "{% static 'feedback_control_app/assets/imgs/max-logo.png' %}"
+            ];
+            const animations = ['float1', 'float2', 'float3', 'float4'];
+            
+            // Создаем 15-20 картинок
+            for (let i = 0; i < 20; i++) {
+                const img = document.createElement('img');
+                const imageType = imageTypes[Math.floor(Math.random() * imageTypes.length)];
+                const animation = animations[Math.floor(Math.random() * animations.length)];
+                
+                img.src = imageType;
+                img.alt = "Логотип";
+                img.className = 'floating-image';
+                img.style.animationName = animation;
+                img.style.animationDuration = `${20 + Math.random() * 30}s`;
+                img.style.animationDelay = `${Math.random() * 5}s`;
+                img.style.left = `${Math.random() * 100}%`;
+                img.style.top = `${Math.random() * 100}%`;
+                
+                container.appendChild(img);
+            }
+        }
+        
+        // Добавляем стили к полям формы Django
+        document.addEventListener('DOMContentLoaded', function() {
+            // Стилизуем поле username
+            const usernameField = document.getElementById('id_username');
+            if (usernameField) {
+                usernameField.placeholder = 'Введите логин';
+                usernameField.className = 'form-control';
+            }
+            
+            // Стилизуем поле password
+            const passwordField = document.getElementById('id_password');
+            if (passwordField) {
+                passwordField.placeholder = 'Введите пароль';
+                passwordField.className = 'form-control';
+            }
+            
+            // Простая клиентская валидация
+            const loginForm = document.querySelector('form[method="post"]');
+            if (loginForm) {
+                loginForm.addEventListener('submit', function(e) {
+                    const username = document.getElementById('id_username');
+                    const password = document.getElementById('id_password');
+                    const errorMessage = document.getElementById('errorMessage');
+                    
+                    if (!username.value || !password.value) {
+                        e.preventDefault();
+                        errorMessage.style.display = 'block';
+                        errorMessage.textContent = 'Пожалуйста, заполните все поля';
+                    }
+                });
+            }
+        });
+        
+        // Запускаем создание картинок после загрузки страницы
+        window.addEventListener('load', createFloatingImages);
+    </script>
+</body>
+</html> 
