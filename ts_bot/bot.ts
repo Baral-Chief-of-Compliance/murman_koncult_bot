@@ -40,6 +40,10 @@ if (!process.env.BOT_TOKEN){
     throw new Error('Token not provided')
 } ;
 
+// Объект, который хранит id пользователей, которые заполняют
+// форму обртаной связи
+let usersInFillingFeedbackForm = new Set<string>();
+
 const bot = new Bot(process.env.BOT_TOKEN);
 logger.info('Bot is start up')
 
@@ -49,8 +53,15 @@ bot.api.setMyCommands(commandsList);
 //Обработка не команд
 bot.hears(/^(?!\/[a-z]+$).*$/, async(ctx) =>{
     const message = ctx.message; // Полученное сообщение
-    await processUnclearMessage(ctx)
-    logger.info(`User with id ${message.sender?.user_id} write to bot "${message.body.text}" timestamp: ${ctx.message.timestamp}`)
+    const userId = message.sender?.user_id
+    if (usersInFillingFeedbackForm.has(userId)){
+        // Здесь необходимо реализовать скрипт
+        // отправки на api сообщения 
+        usersInFillingFeedbackForm.delete(userId)
+    } else {
+        await processUnclearMessage(ctx)
+        logger.info(`User with id ${message.sender?.user_id} write to bot "${message.body.text}" timestamp: ${ctx.message.timestamp}`)
+    }
 })
 
 //Обработка команд, которых нет в списке
@@ -316,6 +327,11 @@ bot.action(HC_DOCUMENTS, async(ctx) => {
 //Форма обратной связи
 bot.action(HC_FEEDBACK_FORM, async(ctx) => {
     await hcFeedbackForm(ctx)
+    if (ctx.user && 'user_id' in ctx.user) {
+        const userId = ctx.user.user_id;
+        usersInFillingFeedbackForm.add(userId);
+    }
+    usersInFillingFeedbackForm.
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Помощь и консультации -> Форма обратной связи__ timestamp: ${ctx.update.timestamp}`)
 })
 
