@@ -62,3 +62,32 @@ PROXY_PASSWORD=<password_прокси>
 ```bash
 docker-compose -f docker-compose.prod.yaml up --build
 ```
+
+#### Подготовка образа для django app
+
+Необходимо перейти в django_app. Прописываем следующую команду на машине, на которой есть доступ к docker образам
+
+linux
+```bash
+docker build -t max_bot_django_app:v1.0 -f ./build.dockerfile .
+```
+
+Windows
+```shell
+docker build -t max_bot_django_app:v1.0 -f .\build.dockerfile .
+```
+
+После успешной сборки, необходимо сделать архив нашего образа
+
+
+Windows/Linux данную команду прописываем в директории (на флешке), так как именно там появиться архив
+
+```bash
+docker save -o max_bot_django_app_v1.0.tar max_bot_django_app:v1.0
+```
+
+Переходим на машину в закрытом контуре, перекидываем туда наш проект и архив с образом. Далее в директории с архивом прописываем команду
+
+```bash
+docker load -i max_bot_django_app_v1.0.tar
+```

@@ -38,11 +38,28 @@ if (process.env.PROXY_USE==="1"){
 if (!process.env.BOT_TOKEN){
     logger.error('Token not provided')
     throw new Error('Token not provided')
-} ;
+};
+
+let CIVILIAN_REQUEST_API_PATH = ''
+let CIVILIAN_REQUEST_API_KEY = ''
+
+if (!process.env.API_PATH){
+    logger.error('API_PATH to civilian request not provided')
+    throw new Error('API_PATH to civilian request not provided')
+}else{
+    CIVILIAN_REQUEST_API_PATH = process.env.API_PATH
+}
+
+if (!process.env.API_KEY){
+    logger.error('API_KEY to civilian request not provided')
+    throw new Error('API_KEY to civilian request not provided')
+}else{
+    CIVILIAN_REQUEST_API_KEY = process.env.API_KEY
+}
 
 // Объект, который хранит id пользователей, которые заполняют
 // форму обртаной связи
-let usersInFillingFeedbackForm = new Set<string>();
+let usersInFillingFeedbackForm = new Set<number>();
 
 const bot = new Bot(process.env.BOT_TOKEN);
 logger.info('Bot is start up')
@@ -53,11 +70,29 @@ bot.api.setMyCommands(commandsList);
 //Обработка не команд
 bot.hears(/^(?!\/[a-z]+$).*$/, async(ctx) =>{
     const message = ctx.message; // Полученное сообщение
-    const userId = message.sender?.user_id
+    const userId = message.sender?.user_id as number
     if (usersInFillingFeedbackForm.has(userId)){
         // Здесь необходимо реализовать скрипт
+        // http://localhost:8000/api/v1.0/civilian_requests/
         // отправки на api сообщения 
-        usersInFillingFeedbackForm.delete(userId)
+        let data = {
+            user_id: userId.toString(),
+            msg: message.body.text
+        }
+
+        let response = await fetch(
+            CIVILIAN_REQUEST_API_PATH, {
+                method: 'POST',
+                headers: {
+                    'Api-token': CIVILIAN_REQUEST_API_KEY,
+                    'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(data)
+            }
+        );
+        usersInFillingFeedbackForm.delete(userId);
+        let result = await response.json();
+        logger.info(`User send feedback msg response answer: ${result.message}`)
     } else {
         await processUnclearMessage(ctx)
         logger.info(`User with id ${message.sender?.user_id} write to bot "${message.body.text}" timestamp: ${ctx.message.timestamp}`)
@@ -331,7 +366,6 @@ bot.action(HC_FEEDBACK_FORM, async(ctx) => {
         const userId = ctx.user.user_id;
         usersInFillingFeedbackForm.add(userId);
     }
-    usersInFillingFeedbackForm.
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Помощь и консультации -> Форма обратной связи__ timestamp: ${ctx.update.timestamp}`)
 })
 

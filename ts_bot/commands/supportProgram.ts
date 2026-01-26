@@ -109,7 +109,7 @@ export async function hcFeedbackForm(ctx:Context){
 
 Напишите нам свой вопрос или предложение, и Вы получите ответ в данном чатом в ближайшее время`,
 {
-    // attachments: [helpConsultFeedbackKeyboard],
+    attachments: [helpConsultChildKeyboard],
     format: 'html'
 }
     )
