@@ -22,7 +22,7 @@ import { reportingPCAdmission, reportingPCBankruptcyProcedure, reportingPCDownsi
 import { ANANLYSTIC_RESEARCH, AS_MARKET_REVIEWS, AS_OTHER_SURVEYS, AS_RESEARCH_SURVEY } from './actions/analysticResearch';
 import { getAnalysticResearch, getARMarketReviews, getAROtherSurveys, getARRussuinSurvey } from './commands/analyticsResearch';
 import { HC_DOCUMENTS, HC_FEEDBACK_FORM, HC_FREQUENTLY_ASKED_QUESTIONS, HC_HOTLINE, HELP_CONSULT } from './actions/supportProgram';
-import { hcDocuments, hcFeedbackForm, hcFrequentlyAskedQuestions, hcHotline, helpConsult } from './commands/supportProgram';
+import { hcDocuments, hcFeedbackForm, hcFeedbackThanks, hcFrequentlyAskedQuestions, hcHotline, helpConsult } from './commands/supportProgram';
 
 // настройка перменных виртуального окружения
 dotenv.config({ path: '.env'})
@@ -79,20 +79,32 @@ bot.hears(/^(?!\/[a-z]+$).*$/, async(ctx) =>{
             user_id: userId.toString(),
             msg: message.body.text
         }
-
-        let response = await fetch(
-            CIVILIAN_REQUEST_API_PATH, {
-                method: 'POST',
-                headers: {
-                    'Api-token': CIVILIAN_REQUEST_API_KEY,
-                    'Content-Type': 'application/json;charset=utf-8'
-                },
-                body: JSON.stringify(data)
+        
+        try{
+            let response = await fetch(
+                CIVILIAN_REQUEST_API_PATH, {
+                    method: 'POST',
+                    headers: {
+                        'Api-token': CIVILIAN_REQUEST_API_KEY,
+                        'Content-Type': 'application/json;charset=utf-8'
+                    },
+                    body: JSON.stringify(data)
+                }
+            );
+            if (!response.ok){
+                const errorText = await response.text()
+                logger.info(`User with id ${message.sender?.user_id} error while sending to api: ${response.status} error: ${errorText}`)
             }
-        );
-        usersInFillingFeedbackForm.delete(userId);
-        let result = await response.json();
-        logger.info(`User send feedback msg response answer: ${result.message}`)
+            usersInFillingFeedbackForm.delete(userId);
+            // let result = await response.json();
+            const resultText = await response.text()
+            logger.info(`User with id ${message.sender?.user_id} write to bot "${message.body.text}" timestamp: ${ctx.message.timestamp} result status: ${response.status} http: ${resultText}`)
+        } catch(error){
+            logger.error(`User with id ${message.sender?.user_id} write to bot "${message.body.text}" timestamp: ${ctx.message.timestamp} error: ${error}`)
+        }
+
+        await hcFeedbackThanks(ctx)
+
     } else {
         await processUnclearMessage(ctx)
         logger.info(`User with id ${message.sender?.user_id} write to bot "${message.body.text}" timestamp: ${ctx.message.timestamp}`)

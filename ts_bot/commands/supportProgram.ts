@@ -114,3 +114,14 @@ export async function hcFeedbackForm(ctx:Context){
 }
     )
 }
+
+//Форма обратной связи спасибо 
+export async function hcFeedbackThanks(ctx:Context){
+    await ctx.reply(
+`🙏 <b>Спасибо за Ваше обращение!</b>`,
+{
+    attachments: [helpConsultChildKeyboard],
+    format: 'html'  
+}
+    )
+}
