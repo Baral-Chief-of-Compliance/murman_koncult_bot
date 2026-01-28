@@ -64,8 +64,8 @@ def change_answer_status_civilian_request(sender, instance, **kwargs):
         headers=headers,
         proxies=proxies,
         url=f'https://platform-api.max.ru/messages?user_id={civilian_request.user_id}',
-        data={
-            "text": f'{instance.msg}'   
+        json={
+            "text": f"Ответ на Выше обращение «{civilian_request.msg}» : {instance.msg}",
         }
     )
     if response.status_code == 200:
