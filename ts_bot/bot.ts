@@ -1,6 +1,7 @@
 import { Bot, Context} from '@maxhub/max-bot-api';
 import { setGlobalDispatcher } from 'undici';
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
+import axios from 'axios';
 
 import { proxyAgent } from './proxy';
 import { commandsList, CONTACT_COMMAND, GoToRabotaInRussia, goVkGroup, RIR_COMMAND, SITE_COMMAND } from './commands/main';
