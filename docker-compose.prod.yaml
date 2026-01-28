@@ -33,7 +33,7 @@ services:
 
     volumes:
       - ./django_app:/home/django-app
-      - ./django_logs:/home/django-app/logs
+      - ./django_logs:/home/django-app/max_bot_control_panel/logs
     ports:
       - 8022:8000
     depends_on:
