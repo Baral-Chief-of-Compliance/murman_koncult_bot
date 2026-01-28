@@ -81,28 +81,23 @@ bot.hears(/^(?!\/[a-z]+$).*$/, async(ctx) =>{
         }
         
         try{
-            let response = await fetch(
-                CIVILIAN_REQUEST_API_PATH, {
-                    method: 'POST',
+            let response = await axios.post(
+                CIVILIAN_REQUEST_API_PATH, data, {
                     headers: {
                         'Api-token': CIVILIAN_REQUEST_API_KEY,
                         'Content-Type': 'application/json;charset=utf-8'
                     },
-                    body: JSON.stringify(data)
                 }
             );
-            if (!response.ok){
-                const errorText = await response.text()
-                logger.info(`User with id ${message.sender?.user_id} error while sending to api: ${response.status} error: ${errorText}`)
+            if (response.status !== 201){
+                logger.info(`User with id ${message.sender?.user_id} error while sending to api: ${response.status} error: ${response.statusText}`)
             }
-            usersInFillingFeedbackForm.delete(userId);
-            // let result = await response.json();
-            const resultText = await response.text()
-            logger.info(`User with id ${message.sender?.user_id} write to bot "${message.body.text}" timestamp: ${ctx.message.timestamp} result status: ${response.status} http: ${resultText}`)
+            logger.info(`User with id ${message.sender?.user_id} write to bot "${message.body.text}" timestamp: ${ctx.message.timestamp} result status: ${response.status} http: ${response}`)
         } catch(error){
             logger.error(`User with id ${message.sender?.user_id} write to bot "${message.body.text}" timestamp: ${ctx.message.timestamp} error: ${error}`)
         }
 
+        usersInFillingFeedbackForm.delete(userId);
         await hcFeedbackThanks(ctx)
 
     } else {
