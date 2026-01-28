@@ -46,6 +46,10 @@ BOT_TOKEN=<ваш_токен>
 PROXY_USE=1
 PROXY_PATH=<url_прокси>
 PROXY_AUTH=0
+NO_PROXY=localhost,127.0.0.1,django-app
+
+API_KEY=M4kn_mDflOdxmDO1jHgWdidnR76Y4H-p3wIhkPJPtlw
+API_PATH=http://django-app:8000/api/v1.0/civilian_requests/
 ```
 
 если же, прокси с авторизацией то.
@@ -56,6 +60,10 @@ PROXY_PATH=<url_прокси>
 PROXY_AUTH=1
 PROXY_LOGIN=<login_прокси>
 PROXY_PASSWORD=<password_прокси>
+NO_PROXY=localhost,127.0.0.1,django-app
+
+API_KEY=M4kn_mDflOdxmDO1jHgWdidnR76Y4H-p3wIhkPJPtlw
+API_PATH=http://django-app:8000/api/v1.0/civilian_requests/
 ```
 
 запуск контейнера
