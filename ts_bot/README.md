@@ -10,6 +10,7 @@ https://max.ru/murman_koncult_bot
    - PROXY_PATH - полный url прокси (без авторизационных данных)
    - PROXY_LOGIN - логин для прокси
    - PROXY_PASSWORD - пароль для прокси
+   - PROXY_AUTH - (1 - использовать прокси, 0 не использовать прокси)
 
 
 ## 🛠️ Запуск (DEV)
