@@ -42,18 +42,18 @@ services:
     networks:
       - murman-koncult-bot-network
 
-  # bot:
-  #   build:
-  #     context: ./ts_bot
-  #     dockerfile: dockerfile
-  #   restart: always
-  #   env_file: ./dev-env/.env
-  #   volumes:
-  #     - ./bot_logs:/home/murman_konsult_bot/logs
-  #   depends_on:
-  #     - django-app
-  #   networks:
-  #     - murman-koncult-bot-network
+  bot:
+    build:
+      context: ./ts_bot
+      dockerfile: dockerfile
+    restart: always
+    env_file: ./dev-env/.env
+    volumes:
+      - ./bot_logs:/home/murman_konsult_bot/logs
+    depends_on:
+      - django-app
+    networks:
+      - murman-koncult-bot-network
 
 
 networks:
