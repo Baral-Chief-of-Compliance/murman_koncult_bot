@@ -24,6 +24,7 @@ import { ANANLYSTIC_RESEARCH, AS_MARKET_REVIEWS, AS_OTHER_SURVEYS, AS_RESEARCH_S
 import { getAnalysticResearch, getARMarketReviews, getAROtherSurveys, getARRussuinSurvey } from './commands/analyticsResearch';
 import { HC_DOCUMENTS, HC_FEEDBACK_FORM, HC_FREQUENTLY_ASKED_QUESTIONS, HC_HOTLINE, HELP_CONSULT } from './actions/supportProgram';
 import { hcDocuments, hcFeedbackForm, hcFeedbackThanks, hcFrequentlyAskedQuestions, hcHotline, helpConsult } from './commands/supportProgram';
+import { S_HOW_REGISTER, S_UNEPLOYMENT_BENEFITS, S_SEARCH_WORK,  } from './actions/soiskatelyam';
 
 // настройка перменных виртуального окружения
 dotenv.config({ path: '.env'})
@@ -376,6 +377,7 @@ bot.action(HC_FEEDBACK_FORM, async(ctx) => {
     }
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Помощь и консультации -> Форма обратной связи__ timestamp: ${ctx.update.timestamp}`)
 })
+
 
 bot.catch(() => {
     logger.error('Bot is down')
