@@ -2,6 +2,11 @@ import { Keyboard } from "@maxhub/max-bot-api";
 
 import { goMainPageKeyboard } from "./main";
 
+import { PERSONNEL_SELECTION } from "../actions/personnelSelection";
+import { HELP_ADVICE } from "../actions/helpAdvice";
+import { REPORTING_PC } from "../actions/reportingPersonalCenter";
+import { ANANLYSTIC_RESEARCH } from "../actions/analysticResearch";
+import { HELP_CONSULT } from "../actions/supportProgram";
 
 export const EmployerMainKeyboard = Keyboard.inlineKeyboard(
      [
