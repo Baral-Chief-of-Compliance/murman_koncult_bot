@@ -1,0 +1,1 @@
+export const SVO_HERO_PAYMENT = "https://trudvsem.ru/vacancy/search?_regionIds=5100000000000&page=0&salary=100000&salary=999999&scheduleType=FULL&vacancyType=LONG"
