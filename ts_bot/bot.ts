@@ -31,6 +31,12 @@ import { S_HOW_REGISTER, S_UNEPLOYMENT_BENEFITS, S_SEARCH_WORK,  } from './actio
 import { SOISKATELYAM, SVO, EMPLOYERS} from './actions/list';
 
 // команды и действия соискатели
+import { S_HOW_REGISTER, S_UNEPLOYMENT_BENEFITS, S_SEARCH_WORK, S_FREE_EDUCATION, S_CAREER_DEVELOPMENT, S_SERVICES_FOR_YOUTH, S_ENTREPRENEURSHIP, S_HELP, S_HOW_REGISTER_ORDER, S_HOW_REGISTER_WHO, S_UNEPLOYMENT_BENEFITS_MAX, S_UNEPLOYMENT_BENEFITS_MIN, S_UNEPLOYMENT_BENEFITS_OLD, S_UNEPLOYMENT_BENEFITS_ORPHANS,  S_SEARCH_WORK_JOB_SELECTION, S_SEARCH_WORK_MY_RESUME, S_SEARCH_WORK_MY_INTERVIEW, S_SEARCH_WORK_TEMPORARY_EMPLOYMENT, S_SEARCH_WORK_JOB_FAIRS, S_FREE_EDUCATION_NON_WORKER, S_FREE_EDUCATION_PROJECT_PERSONNEL, S_CAREER_DEVELOPMENT_CAREER_GUIDANCE, S_CAREER_DEVELOPMENT_ADAPTATION, S_CAREER_DEVELOPMENT_PSY_SUPPORT, S_HELP_QUESTIONS_ANSWERS, S_HELP_HOTLINE, S_HELP_FEEDBACK} from './actions/soiskatelyam';
+
+
+import {
+soiskatelyamMain, sosikatelyHowRegister, soiskatelyHowRegisterOrder, soiskatelyHowRegisterWho, soiskatelyUneploymentBenefits, soiskatelyUneploymentBenefitsMax, soiskatelyUneploymentBenefitsMin, soiskatelyUneploymentBenefitsOld, soiskatelyUneploymentBenefitsOrphans, soiskatelySearchWork, soiskatelySearchWorkJobSelection, soiskatelySearchWorkMyResume, soiskatelySearchWorkMyInterview, soiskatelySearchWorkTemporaryEmployment, soiskatelySearchWorkJobFairs, soiskatelyFreeEducation, soiskatelyFreeEducationNonWorker, soiskatelyamFreeEducationProjectPersonnel, soiskatelyamCareerDevelopment, soiskatelyamCareerDevelopmentGuidance, soiskatelyamCareerDevelopmentAdaptation, soiskatelyamCareerDevelopmentPsySupport, soiskatelyamServicesForYouth, soiskatelyamServicesEntrePreneurShip, soiskatelyamHelp, soiskatelyamHelpAnswers, sosikatelyamHotlien, soiskatelyamHelpFeedback
+} from './commands/soiskatelyam';
 
 // комнада на главное меню сво
 import { SvoMain } from './commands/svo';
@@ -404,6 +410,207 @@ bot.action(HC_FEEDBACK_FORM, async(ctx) => {
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Помощь и консультации -> Форма обратной связи__ timestamp: ${ctx.update.timestamp}`)
 })
 
+
+//Соискателям
+bot.action(SOISKATELYAM, async(ctx) => {
+    await soiskatelyamMain(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Как встать на учет?
+bot.action(S_HOW_REGISTER, async(ctx) => {
+    await sosikatelyHowRegister(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Как встать на учет?__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Пособие по безработице
+bot.action(S_UNEPLOYMENT_BENEFITS, async(ctx) => {
+    await soiskatelyUneploymentBenefits(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Пособие по безработице__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Поиск работы
+bot.action(S_SEARCH_WORK, async(ctx) => {
+    await soiskatelySearchWork(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Поиск работ__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+
+//Бесплатное обучение
+bot.action(S_FREE_EDUCATION, async(ctx) => {
+    await soiskatelyFreeEducation(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Бесплатное обучение__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Карьерное развитие
+bot.action(S_CAREER_DEVELOPMENT, async(ctx) => {
+    await soiskatelyamCareerDevelopment(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Карьерное развитие__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Сервисы для молодежи
+bot.action(S_SERVICES_FOR_YOUTH, async(ctx) => {
+    await soiskatelyamServicesForYouth(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Сервисы для молодежи__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Предпринимательство
+bot.action(S_ENTREPRENEURSHIP, async(ctx) => {
+    await soiskatelyamServicesEntrePreneurShip(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Предпринимательство__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Помощь и консультации
+bot.action(S_HELP, async(ctx) => {
+    await soiskatelyamHelp(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Помощь и консультации__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Порядок признания безработным
+bot.action(S_HOW_REGISTER_ORDER, async(ctx) => {
+    await soiskatelyHowRegisterOrder(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Как встать на учет? -> Порядок признания безработным__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Кто не может быть признан безработным?
+bot.action(S_HOW_REGISTER_WHO, async(ctx) => {
+    await soiskatelyHowRegisterWho(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Как встать на учет? -> Кто не может быть признан безработным?__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Максимальное пособие
+bot.action(S_UNEPLOYMENT_BENEFITS_MAX, async(ctx) => {
+    await soiskatelyUneploymentBenefitsMax(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Пособие по безработице -> Максимальное пособие__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+
+//Минимальное пособие
+bot.action(S_UNEPLOYMENT_BENEFITS_MIN, async(ctx) => {
+    await soiskatelyUneploymentBenefitsMin(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Пособие по безработице -> Минимальное пособие__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Пособие предпенсионерам
+bot.action(S_UNEPLOYMENT_BENEFITS_OLD, async(ctx) => {
+    await soiskatelyUneploymentBenefitsOld(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Пособие по безработице -> Пособие предпенсионерам__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Выплаты детям-сиротам
+bot.action(S_UNEPLOYMENT_BENEFITS_ORPHANS, async(ctx) => {
+    await soiskatelyUneploymentBenefitsOrphans(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Пособие по безработице -> Выплаты детям-сиротам__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Подбор работы
+bot.action(S_SEARCH_WORK_JOB_SELECTION, async(ctx) => {
+    await soiskatelySearchWorkJobSelection(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Поиск работ -> Подбор работы__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Мое резюме
+bot.action(S_SEARCH_WORK_MY_RESUME, async(ctx) => {
+    await soiskatelySearchWorkMyResume(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Поиск работ -> Мое резюме__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Мое собеседование
+bot.action(S_SEARCH_WORK_MY_INTERVIEW, async(ctx) => {
+    await soiskatelySearchWorkMyInterview(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Поиск работ -> Мое собеседование__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Временная занятость
+bot.action( S_SEARCH_WORK_TEMPORARY_EMPLOYMENT, async(ctx) => {
+    await soiskatelySearchWorkTemporaryEmployment(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Поиск работ -> Временная занятость__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Ярмарки вакансий
+bot.action(S_SEARCH_WORK_JOB_FAIRS, async(ctx) => {
+    await soiskatelySearchWorkJobFairs(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Поиск работ -> Ярмарки вакансий__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Обучение безработных граждан
+bot.action(S_FREE_EDUCATION_NON_WORKER, async(ctx) => {
+    await soiskatelyFreeEducationNonWorker(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Бесплатное обучение -> Обучение безработных граждан__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Обучение по нацпроекту «Кадры»
+bot.action(S_FREE_EDUCATION_PROJECT_PERSONNEL, async(ctx) => {
+    await soiskatelyamFreeEducationProjectPersonnel(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Бесплатное обучение -> Обучение по нацпроекту «Кадры»__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Профориентация
+bot.action(S_CAREER_DEVELOPMENT_CAREER_GUIDANCE, async(ctx) => {
+    await soiskatelyamCareerDevelopmentGuidance(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Карьерное развитие -> Профориентация__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Адаптация на рынке труда
+bot.action(S_CAREER_DEVELOPMENT_ADAPTATION, async(ctx) => {
+    await soiskatelyamCareerDevelopmentAdaptation(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Карьерное развитие -> Адаптация на рынке труда__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Психологическая поддержка
+bot.action(S_CAREER_DEVELOPMENT_PSY_SUPPORT, async(ctx) => {
+    await soiskatelyamCareerDevelopmentPsySupport(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Карьерное развитие -> Психологическая поддержка__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Часто задаваемые вопросы
+bot.action(S_HELP_QUESTIONS_ANSWERS, async(ctx) => {
+    await soiskatelyamHelpAnswers(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Помощь и консультации -> Часто задаваемые вопросы__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Горячая линия
+bot.action(S_HELP_HOTLINE, async(ctx) => {
+    await sosikatelyamHotlien(ctx)
+    logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Помощь и консультации -> Горячая линия__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//форма обратной связи для соискателя
+bot.action(S_HELP_FEEDBACK, async(ctx) => {
+   await soiskatelyamHelpFeedback(ctx)
+	if (ctx.user && 'user_id' in ctx.user) {
+        const userId = ctx.user.user_id;
+        usersInFillingFeedbackForm.add(userId);
+   }
+   logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Соискателям -> Помощь и консультации -> форма обратной связи__ timestamp: ${ctx.update.timestamp}`)
+})
 
 bot.catch(() => {
     logger.error('Bot is down')
