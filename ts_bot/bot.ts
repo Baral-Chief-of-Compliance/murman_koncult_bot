@@ -26,6 +26,19 @@ import { HC_DOCUMENTS, HC_FEEDBACK_FORM, HC_FREQUENTLY_ASKED_QUESTIONS, HC_HOTLI
 import { hcDocuments, hcFeedbackForm, hcFeedbackThanks, hcFrequentlyAskedQuestions, hcHotline, helpConsult } from './commands/supportProgram';
 import { S_HOW_REGISTER, S_UNEPLOYMENT_BENEFITS, S_SEARCH_WORK,  } from './actions/soiskatelyam';
 
+
+// Действия список
+import { SOISKATELYAM, SVO, EMPLOYERS} from './actions/list';
+
+// команды и действия соискатели
+
+// комнада на главное меню сво
+import { SvoMain } from './commands/svo';
+
+// команда на главное меню работодателя
+import { EmployerMain } from './commands/employer';
+
+
 // настройка перменных виртуального окружения
 dotenv.config({ path: '.env'})
 
@@ -150,6 +163,19 @@ bot.command(SITE_COMMAND, async(ctx) => {
 bot.action(MAIN_PAGE_ACTION, async(ctx) => {
     await startCommand(ctx)
     logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __На главную__ timestamp: ${ctx.update.timestamp}`)
+})
+
+
+//Работодателям
+bot.action(EMPLOYERS, async(ctx) => {
+	await EmployerMain(ctx)
+	logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __Работодателям__ timestamp: ${ctx.update.timestamp}`)
+})
+
+//СВО
+bot.action(SVO, async(ctx) => {
+	await SvoMain(ctx)
+	logger.info(`User with id ${(ctx.user as any)?.user_id} use btn __СВО__ timestamp: ${ctx.update.timestamp}`)
 })
 
 //О кадровом центре
