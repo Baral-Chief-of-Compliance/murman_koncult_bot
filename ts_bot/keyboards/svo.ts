@@ -11,7 +11,7 @@ import { SVO_HERO_PAYMENT } from "../links/svo";
 //Клавиатура для пункта про сво
 export const SvoKeyboard = Keyboard.inlineKeyboard(
 	[
-		[Keyboard.button.link("Зарплата Героев", SVO_HERO_PAYMENT)]
+		[Keyboard.button.link("Зарплата Героев", SVO_HERO_PAYMENT)],
 		goMainPageKeyboard
 	]
 )
